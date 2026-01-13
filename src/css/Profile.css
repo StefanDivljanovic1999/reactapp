@@ -1,0 +1,30 @@
+.profile {
+  background-image: url("profile-background1.jpg");
+  height: 100vh;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-img {
+  max-width: 250px;
+  max-height: 200px;
+  border-radius: 50%;
+}
+
+.profile-h2 {
+  font-family: "MV Boli";
+  font-size: xx-large;
+}
+
+.profile-div {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  padding: 40px 50px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  width: 300px;
+}

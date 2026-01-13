@@ -1,0 +1,152 @@
+/* ========== PAGE LAYOUT ========== */
+.divPage {
+  display: flex;
+  height: 100vh;
+  padding-top: 40px;
+  box-sizing: border-box;
+}
+
+/* ========== LEFT SIDEBAR ========== */
+.divElements {
+  display: flex;
+  flex-direction: column;
+  width: 220px;
+  border-right: 2px solid #000;
+  background-color: #e0e0e0;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.divTemplate {
+  margin-bottom: 10px;
+}
+
+.elements h1,
+.elements h2,
+.elements p {
+  cursor: grab;
+  margin: 6px 0;
+}
+
+/* ========== EDIT BUTTONS ========== */
+.EditButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  border-right: 2px solid #000;
+  background: #f4f4f4;
+}
+
+/* ========== DROP AREA ========== */
+.divDrop {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 20px;
+  background: #fafafa;
+  overflow-y: auto;
+}
+
+/* ========== HEADER ZONE ========== */
+.divHeader {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  min-height: 120px;
+  background: #d9d9d9;
+  border: 2px dashed #000;
+  gap: 10px;
+}
+
+.divHeader h1 {
+  margin: 0;
+  cursor: text;
+}
+
+/* Drop zona u headeru */
+.headerAbout {
+  min-height: 60px;
+  padding: 10px;
+  background: #cfcfcf;
+  border: 2px dashed #333;
+}
+
+/* ========== CONTENT ZONE ========== */
+.divContent {
+  flex: 1;
+  min-height: 300px;
+  padding: 15px;
+  background: #e6f0ff;
+  border: 2px dashed #d6d3d3;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+/* ========== DROPPED ELEMENTS ========== */
+.divContent h1,
+.divContent h2,
+.divContent p {
+  margin: 0;
+  cursor: text;
+}
+
+.divContent h2 {
+  text-align: left;
+}
+
+.divContent p {
+  white-space: pre-wrap; /* čuva sve razmake i nove linije */
+}
+
+.divContent img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+}
+
+.divContent [contenteditable] {
+  white-space: pre-wrap;
+}
+
+.landing {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* cela visina ekrana */
+  width: 100%;
+}
+
+/* HERO */
+.landing-hero {
+  flex: 2; /* srednji deo, možeš prilagoditi */
+  background-color: #f0f8ff; /* samo da se vidi sekcija */
+  padding: 10px;
+  overflow-y: auto;
+}
+
+/* FEATURES */
+.landing-features {
+  flex: 3; /* veći deo */
+  background-color: #f5f5f5;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+/* CTA */
+.landing-CTA {
+  flex: 1; /* manji deo */
+  background-color: #e0e0e0;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+/* elementi unutar sekcija */
+.hero-element,
+.feature-card,
+.cta-box > * {
+  width: 100%; /* full width */
+  margin-bottom: 10px; /* razmak između elemenata */
+}

@@ -1,0 +1,26 @@
+.drag-app {
+  display: flex;
+  height: 100vh;
+}
+
+.elementi {
+  width: 30%;
+  padding: 20px;
+  border-right: 2px solid;
+  background: gray;
+}
+
+.drop-zona {
+  flex: 1;
+  padding: 20px;
+}
+
+/*p {
+  border-radius: 5px;
+  background: burlywood;
+  width: 50px;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+}*/

@@ -1,0 +1,114 @@
+.siteBrowser {
+  min-height: 100vh;
+  background: #f6f8fb;
+  padding-top: 100px;
+}
+
+.divSearchBrowser {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+}
+
+.findH1 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #111827;
+}
+
+.SearchInputWrapperBrowser {
+  display: flex;
+  position: relative;
+  align-self: center;
+  width: 250px;
+}
+
+.SearchInputMySite {
+  width: 250px;
+  height: 36px;
+  font-size: 16px;
+  color: #111827;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+}
+
+.SearchInputMysite::placeholder {
+  color: #1a4692;
+}
+
+.SearchInputMysite:focus {
+  border-color: #131469;
+}
+
+/* SEARCH BUTTON */
+.searchButton {
+  height: 36px;
+  width: 36px;
+  border-radius: 6px;
+  border: none;
+  background: #6366f1;
+  color: white;
+  cursor: pointer;
+}
+
+.MySiteUl {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 250px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  list-style: none;
+  margin: 4px 0 0 0;
+  padding: 0;
+}
+
+.MySiteLi {
+  padding: 12px 16px;
+  cursor: pointer;
+  color: #111827;
+}
+
+.MySiteLi:hover {
+  background: #eef2ff;
+}
+
+.browserNavbar {
+  display: flex;
+  width: 100vw;
+  background-color: #6366f1;
+  color: #d1d5db;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+  height: 45px;
+  padding-top: 0;
+}
+
+.browserLi {
+  list-style: none;
+  cursor: pointer;
+  font-size: x-large;
+  font-weight: bold;
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.browserLi:hover {
+  transform: scale(1.1);
+}
+
+.backButton1 {
+  background-color: #ede9fe;
+  color: #4c1d95;
+  border: 1px solid #ddd6fe;
+  padding: 8px 20px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bolder;
+  cursor: pointer;
+
+  transition: background-color 0.2s ease, transform 0.15s ease,
+    box-shadow 0.15s ease;
+}

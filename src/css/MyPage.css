@@ -1,0 +1,115 @@
+/* Glavni kontejner preko celog ekrana */
+.divMyPage {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Hero/stranica počinje od vrha */
+  background: url(categories.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 0;
+  overflow-y: auto; /* scroll ako sadržaj pređe ekran */
+  box-sizing: border-box;
+}
+
+/* Search i naslov (ako je potrebno) */
+.findH1 {
+  color: aliceblue;
+  font-size: 28px;
+  text-align: center;
+  margin: 16px 0;
+}
+
+/* Wrapper za search */
+.divSearch {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  padding: 316px;
+  box-sizing: border-box;
+}
+
+/* Input i dropdown */
+.SearchInputWrapper {
+  display: flex;
+  position: relative;
+  width: 360px;
+}
+
+.SearchInputMyPage {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.MyPageUl {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  list-style: none;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 50;
+  border-radius: 0 0 6px 6px;
+}
+
+.MyPageLi {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.MyPageLi:hover {
+  background-color: #f0f0f0;
+}
+
+/* Dugme za search */
+.searchButton {
+  padding: 8px 12px;
+  background-color: #1877f2;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+/* Render stranice preko celog ekrana */
+.PageDiv {
+  width: 100%;
+  min-height: 100vh;
+  padding: 24px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  overflow-y: auto; /* scroll ako je sadržaj veći od ekrana */
+}
+
+/* Hero i feature sekcije da stretchuju */
+.PageDiv section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.PageDiv img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}

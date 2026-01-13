@@ -1,0 +1,166 @@
+.postWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100vh;
+  background-image: url("categories.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.deleteZone {
+  background-color: red;
+  width: 25%;
+  height: 100vh;
+  color: aliceblue;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.submitZone {
+  background-color: green;
+  color: aliceblue;
+  width: 25%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.postDiv {
+  width: 450px;
+  margin: 50px auto;
+  padding: 30px;
+  border: 2px solid #ccc;
+  background: white;
+  cursor: grab;
+  font-family: Arial, sans-serif;
+  position: relative;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.postDiv {
+  min-width: 550px;
+  min-height: 600px;
+  margin: 50px auto;
+  padding: 30px;
+  font-family: Arial, sans-serif;
+  position: relative;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.postDiv p {
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.postInput {
+  width: 100%;
+  height: 35px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+  position: relative;
+  z-index: 1;
+}
+
+.postInput:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15);
+}
+
+.postDropdown {
+  position: relative;
+  width: 100%;
+}
+
+.postUl {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%; /* sada je širina ista kao input */
+  margin-top: 4px;
+  padding: 0;
+  list-style: none;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  max-height: 200px; /* povećao sam malo visinu dropdown-a */
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.postLi {
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.postLi:hover {
+  background-color: #f3f4f6;
+}
+
+.postLi:not(:last-child) {
+  border-bottom: 1px solid #eee;
+}
+
+.postP {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.previewImage {
+  width: 100%;
+  min-height: 200px;
+  object-fit: cover;
+  margin-top: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.deleteP {
+  font-size: 150px;
+  display: flex;
+  align-items: center;
+  background-color: #4f46e5;
+  border-radius: 50%;
+}
+
+.submitP {
+  font-size: 150px;
+  display: flex;
+  align-items: center;
+  background-color: #4f46e5;
+  border-radius: 50%;
+}
+
+.postH3 {
+  display: flex;
+  align-self: center;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  background-color: #4f46e5;
+  color: whitesmoke;
+  min-height: 45px;
+  width: 95%;
+  font-size: x-large;
+}

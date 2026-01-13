@@ -1,23 +1,59 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Login from "./components/Login";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import Home from "./components/Home";
+import NavBar from "./components/NavBar";
+import ProtectedRoute from "./ProtectedRoute";
+import Register from "./components/Register";
+import { useState } from "react";
+import Profile from "./components/Profile";
+import PostCategories from "./components/PostCategories";
+import Feed from "./components/Feed";
+import Post from "./components/Post";
+import Page from "./components/Page";
+import MyPage from "./components/MyPage";
+import Menu from "./components/menu";
+import SiteBrowser from "./components/SiteBrowser";
+
+function AppContent() {
+  const location = useLocation();
+  const [username, SetUsername] = useState();
+
+  const hideNavBar =
+    location.pathname === "/" || location.pathname === "/register";
+  return (
+    <>
+      {!hideNavBar && <NavBar />}
+      <Routes>
+        <Route path="/" element={<Login SetUsername={SetUsername} />} />
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <Home username={username} />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/register" element={<Register />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/post_category" element={<PostCategories />} />
+        <Route path="/post" element={<Post />} />
+        <Route path="/feed" element={<Feed />} />
+        <Route path="/page" element={<Page />} />
+        <Route path="/my-page" element={<MyPage />} />
+        <Route path="/menu" element={<Menu />} />
+        <Route path="/browser" element={<SiteBrowser />} />
+      </Routes>
+    </>
+  );
+}
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrowserRouter>
+        <AppContent />
+      </BrowserRouter>
     </div>
   );
 }

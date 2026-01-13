@@ -1,0 +1,12 @@
+/*.navBar {
+  display: flex;
+  flex-direction: row;
+  background-color: rgb(108, 94, 94);
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: rgb(175, 175, 175);
+  align-items: center;
+  min-height: 40px;
+  padding-left: 25px;
+  font-size: large;
+}*/

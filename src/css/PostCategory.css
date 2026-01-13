@@ -1,0 +1,158 @@
+.categories {
+  background: url(categories.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  padding-top: 60px;
+}
+
+.post-categories-container {
+  width: 400px;
+  margin: 100px auto 0 auto;
+  padding: 20px;
+
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+
+  position: relative;
+  z-index: 1;
+}
+
+.post-categories-container h1 {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.post-categories-container p {
+  margin: 6px 0;
+  padding: 8px 12px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.btnAdd {
+  background-color: green;
+  color: aliceblue;
+  border-radius: 5px;
+  height: 50px;
+  font-weight: bolder;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.btnEdit {
+  background-color: yellow;
+  color: black;
+  border-radius: 5px;
+  height: 30px;
+  font-weight: bolder;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.btnDelete {
+  background-color: red;
+  color: aliceblue;
+  border-radius: 5px;
+  height: 30px;
+  font-weight: bolder;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.btnSearch {
+  background-color: #1877f2;
+  border-radius: 5px;
+  color: aliceblue;
+  cursor: pointer;
+}
+
+button:hover {
+  transform: scale(1.1);
+  text-decoration: underline;
+}
+
+.pagination {
+  display: flex;
+  gap: 25px;
+  padding-top: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  padding-top: 40px;
+  padding-bottom: 5px;
+}
+
+.btnPagination {
+  width: 100px;
+  padding: 8px 12px;
+  text-align: center;
+  background-color: #1877f2;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.btnPagination:hover {
+  transform: scale(1.05);
+  background-color: #145dbf;
+}
+
+.paginationSpan {
+  color: aliceblue;
+  font-family: "Poppins", sans-serif;
+  background-color: grey;
+  border-radius: 5%;
+}
+
+.h1Category {
+  padding-top: 20px;
+  font-family: "Poppins", sans-serif;
+
+  color: aliceblue;
+}
+
+.searchHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.searchHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 30px;
+}
+
+.btnSearch {
+  height: 40px;
+  padding: 0 15px;
+  font-size: 16px;
+}
+
+.searchHeader h4 {
+  line-height: 40px;
+  margin: 0;
+  font-size: 16px;
+  color: aliceblue;
+}

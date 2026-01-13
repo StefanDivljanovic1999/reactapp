@@ -1,0 +1,223 @@
+/* Glavni container */
+.MenuContainer {
+  max-width: 900px;
+  margin: auto;
+  padding: 40px;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Naslovi */
+.MenuContainer h1 {
+  text-align: center;
+  color: #273c75;
+  margin-bottom: 20px;
+}
+
+.MenuContainer h2 {
+  color: #44bd32;
+  margin-top: 20px;
+}
+
+.MenuContainer h3,
+.MenuContainer h4 {
+  color: #2f3640;
+  margin: 8px 0;
+}
+
+/* Site title input i dugme */
+.MenuTitle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.menuItemsInput {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #dcdde1;
+  font-size: 16px;
+}
+
+.btnShowTitle {
+  padding: 8px 15px;
+  border: none;
+  background-color: #273c75;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.btnShowTitle:hover {
+  background-color: #192a56;
+}
+
+/* Number of menu items */
+.numOfItemsDiv {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.inputNumOfItems {
+  width: 80px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #dcdde1;
+  font-size: 16px;
+}
+
+.btnCheckNum {
+  padding: 6px 12px;
+  border: none;
+  background-color: #40739e;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btnCheckNum:hover {
+  background-color: #2f3640;
+}
+
+/* Menu nav bar */
+.menuNavBarUl {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding: 0;
+}
+
+.menuNavBarLi {
+  background-color: #dcdde1;
+  width: 150px;
+  height: 80px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.menuNavBarLi:hover {
+  transform: scale(1.05);
+  background-color: #f1f2f6;
+}
+
+.menuNavBarLiName {
+  user-select: none;
+  font-weight: bold;
+}
+
+.menuNavBarLi + button {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: #e84118;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  font-weight: bold;
+  line-height: 22px;
+  padding: 0;
+}
+
+.menuNavBarLi + button:hover {
+  background-color: #c23616;
+}
+
+/* Search input i dropdown */
+.divSearchMenu {
+  margin: 30px 0;
+  position: relative;
+}
+
+.SearchInputWrapperMenu {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.SearchInputMyPageMenu {
+  padding: 8px 12px;
+  width: 300px;
+  border-radius: 8px;
+  border: 1px solid #dcdde1;
+  font-size: 16px;
+  z-index: 1;
+  position: relative;
+}
+
+/* Dropdown opcije odmah ispod inputa */
+.MyPageUl {
+  position: absolute;
+  top: 100%; /* odmah ispod inputa */
+  left: 0;
+  background: #fff;
+  border: 1px solid #dcdde1;
+  border-radius: 8px;
+  width: 300px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 100;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.MyPageLi {
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.MyPageLi:hover {
+  background-color: #f1f2f6;
+}
+
+/* Selected page */
+.selectedPage {
+  margin: 20px 0;
+  padding: 15px;
+  background-color: #f5f6fa;
+  border: 2px dashed #40739e;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.dragSlug {
+  cursor: grab;
+  color: #40739e;
+}
+
+/* Save button */
+.btnSaveMenu {
+  margin-top: 20px;
+  padding: 10px 25px;
+  border: none;
+  background-color: #273c75;
+  color: #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.btnSaveMenu:hover {
+  background-color: #192a56;
+}

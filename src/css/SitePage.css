@@ -1,0 +1,146 @@
+/* ====== GLOBAL CONTAINER ====== */
+.sitePage {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 24px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto,
+    sans-serif;
+  color: #1f2937;
+  line-height: 1.6;
+}
+
+/* ====== PAGE TITLE ====== */
+.sitePageTitle {
+  text-align: center;
+  margin-bottom: 64px;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* ====== BLOG ITEMS ====== */
+.sitePageItem {
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* CENTER EVERYTHING */
+  text-align: center;
+}
+
+/* Respect content from DB */
+.sitePageItem h1 {
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.sitePageItem h2 {
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.sitePageItem p {
+  max-width: 720px;
+  font-size: 18px;
+  color: #374151;
+}
+
+/* ====== IMAGES ====== */
+.sitePageItem img,
+.hero img {
+  display: block;
+  margin: 24px auto;
+  max-width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* ====== HERO SECTION ====== */
+.hero {
+  text-align: center;
+  margin-bottom: 96px;
+}
+
+.hero h1 {
+  font-size: 52px;
+  font-weight: 800;
+  margin-bottom: 24px;
+}
+
+.hero p {
+  max-width: 640px;
+  margin: 0 auto 32px;
+  font-size: 20px;
+  color: #4b5563;
+}
+
+/* ====== FEATURES ====== */
+.features {
+  margin-bottom: 96px;
+  text-align: center;
+}
+
+.features h2 {
+  font-size: 36px;
+  margin-bottom: 48px;
+}
+
+.feature {
+  max-width: 420px;
+  margin: 0 auto 32px;
+}
+
+.feature h3 {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+.feature p {
+  color: #6b7280;
+}
+
+/* ====== CTA ====== */
+.cta {
+  text-align: center;
+  padding: 72px 32px;
+  background: linear-gradient(135deg, #ede9fe, #f5f3ff);
+  border-radius: 20px;
+}
+
+.cta h2 {
+  font-size: 36px;
+  margin-bottom: 16px;
+}
+
+.cta p {
+  max-width: 560px;
+  margin: 0 auto 24px;
+  font-size: 18px;
+  color: #4b5563;
+}
+
+/* ====== CTA BUTTON ====== */
+.ctaBtn {
+  background-color: #ede9fe;
+  color: #4c1d95;
+  border: 1px solid #ddd6fe;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+
+  transition: transform 0.15s ease, box-shadow 0.15s ease,
+    background-color 0.2s ease;
+}
+
+.ctaBtn:hover {
+  background-color: #ddd6fe;
+  transform: scale(1.06);
+  box-shadow: 0 12px 30px rgba(124, 58, 237, 0.25);
+}
+
+.ctaBtn:active {
+  transform: scale(0.96);
+}
