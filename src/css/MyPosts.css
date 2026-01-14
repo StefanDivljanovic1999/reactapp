@@ -39,3 +39,31 @@
   font-weight: bold;
   color: #333;
 }
+
+.paginationButtons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 500px;
+  margin-top: 20px;
+}
+
+.postSpan {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: bold;
+  background-color: #847c7c;
+  width: 36px;
+}
+
+.previousButton,
+.nextButton {
+  background-color: #1877f2;
+  color: white;
+  height: 36px;
+  width: 90px;
+  border-radius: 10%;
+  border: 1px solid #333;
+  font-weight: bold;
+}

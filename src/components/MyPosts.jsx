@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import Post from "./Post";
 import "../css/MyPosts.css";
+import { GrFormNextLink, GrFormPreviousLink } from "react-icons/gr";
 
 const MyPosts = () => {
   const auth_token = window.sessionStorage.getItem("auth_token");
@@ -13,6 +14,19 @@ const MyPosts = () => {
   const [editingPostID, setEditingPostID] = useState(null);
   const [editTitle, setEditTitle] = useState("");
   const [editContent, setEditContent] = useState("");
+  /* dodacemo opcije za paginaciju*/
+  const [currentPage, setCurrentPage] = useState(1);
+  /*broj postova po stranici je 5 */
+  const itemsPerPage = 5;
+  /*pocetni indeks na svakoj stranici se racuna po seldecoj formuli */
+  const startIndex = (currentPage - 1) * itemsPerPage;
+
+  /*vise necemo prikazivati sve nase postove nego cemo ih nazvati paginatedPosts */
+  const paginatedPosts = myPosts
+    .slice()
+    .reverse()
+    .slice(startIndex, startIndex + itemsPerPage);
+  /*slice() nam prestavlja kopiju niza myposts */
 
   const fetchPosts = useCallback(async () => {
     try {
@@ -25,7 +39,7 @@ const MyPosts = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [auth_token]);
+  }, [auth_token, user_id]);
 
   useEffect(() => {
     fetchPosts();
@@ -37,8 +51,10 @@ const MyPosts = () => {
 
   const handleEdit = (e) => {
     const postID = Number(e.dataTransfer.getData("text/plain"));
+    /*nalazimo post sa zadatiim idjem*/
     const post = myPosts.find((p) => p.id === postID);
     if (!post) return;
+    /*da bi nam pocetne vrednosti koje menjamo ostale iste koje su bile */
     setEditingPostID(post.id);
     setEditTitle(post.title);
     setEditContent(post.content);
@@ -70,7 +86,9 @@ const MyPosts = () => {
       );
       alert("Post successfully updated!");
       setEditingPostID(null);
+      /*osvezavamo sa novim podacima i edit index vracamo na null */
       fetchPosts();
+      console.log(response);
     } catch (error) {
       console.log(error);
       alert("Error updating post!");
@@ -112,7 +130,7 @@ const MyPosts = () => {
 
       <div className="MyPostsZone">
         <h1>My posts</h1>
-        {myPosts.map((post) => (
+        {paginatedPosts.map((post) => (
           <div key={post.id}>
             {/*omogucava da svaki post postane draggable */}
             <Post
@@ -143,6 +161,23 @@ const MyPosts = () => {
             )}
           </div>
         ))}
+        <div className="paginationButtons">
+          <button
+            className="previousButton"
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((p) => p - 1)}
+          >
+            <GrFormPreviousLink /> Previous
+          </button>
+          <span className="postSpan">{currentPage}</span>
+          <button
+            className="nextButton"
+            disabled={currentPage * itemsPerPage >= myPosts.length}
+            onClick={() => setCurrentPage((p) => p + 1)}
+          >
+            Next <GrFormNextLink />
+          </button>
+        </div>
       </div>
 
       <div
