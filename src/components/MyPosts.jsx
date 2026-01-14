@@ -5,6 +5,9 @@ import { useEffect } from "react";
 import Post from "./Post";
 import "../css/MyPosts.css";
 import { GrFormNextLink, GrFormPreviousLink } from "react-icons/gr";
+import { FaHandPointLeft, FaHandPointRight } from "react-icons/fa";
+import { FaPenAlt } from "react-icons/fa";
+import { ImBin } from "react-icons/im";
 
 const MyPosts = () => {
   const auth_token = window.sessionStorage.getItem("auth_token");
@@ -126,10 +129,15 @@ const MyPosts = () => {
         onDrop={handleEdit}
       >
         DROP POST HERE TO EDIT!
+        <FaPenAlt />
       </div>
 
       <div className="MyPostsZone">
         <h1>My posts</h1>
+        <h2>
+          <FaHandPointLeft /> Drag post to left zone to edit, to right zone to
+          delete post <FaHandPointRight />
+        </h2>
         {paginatedPosts.map((post) => (
           <div key={post.id}>
             {/*omogucava da svaki post postane draggable */}
@@ -186,6 +194,7 @@ const MyPosts = () => {
         onDrop={handleDelete}
       >
         DROP HERE TO DELETE POST!
+        <ImBin />
       </div>
     </div>
   );

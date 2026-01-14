@@ -4,20 +4,19 @@
   min-height: 100vh;
 }
 
-/* LEVA ZONA – EDIT */
 .editMyPostsZone {
   width: 10%;
   background-color: rgba(0, 0, 255, 0.05);
   border-right: 2px dashed rgba(0, 0, 255, 0.3);
 
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   font-weight: bold;
   color: #333;
 }
 
-/* SREDINA – POSTOVI */
 .MyPostsZone {
   width: 80%;
   padding: 20px;
@@ -27,13 +26,14 @@
   align-items: center;
 }
 
-/* DESNA ZONA – DELETE */
 .deleteMyPostZone {
   width: 10%;
   background-color: rgba(255, 0, 0, 0.05);
   border-left: 2px dashed rgba(255, 0, 0, 0.3);
 
   display: flex;
+  flex-direction: column;
+
   align-items: center;
   justify-content: center;
   font-weight: bold;
@@ -63,7 +63,46 @@
   color: white;
   height: 36px;
   width: 90px;
-  border-radius: 10%;
+  border-radius: 10px;
   border: 1px solid #333;
   font-weight: bold;
+}
+
+.editForm {
+  padding: 15px;
+  margin: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 2px solid black;
+  border-radius: 10px;
+  background-color: #9e860cfe;
+}
+
+.editForm input {
+  margin-top: 10px;
+  padding: 15px;
+  border: 1px solid #333;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  font-size: 14px;
+}
+
+.editForm textarea {
+  margin-top: 10px;
+  padding: 15px;
+  border: 1px solid #333;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  font-size: 14px;
+}
+
+.editForm button {
+  background-color: #1877f2;
+  color: white;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid #333;
+  font-weight: bold;
+  font-size: large;
 }
