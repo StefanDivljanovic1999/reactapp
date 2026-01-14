@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../css/Profile.css";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const [data, SetData] = useState(null);
   const auth_token = window.sessionStorage.getItem("auth_token");
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       let config = {
@@ -44,6 +45,7 @@ const Profile = () => {
         <h2>Name: {data.data.name}</h2>
         <h2>Email: {data.data.email} </h2>
         <h2>Role: {data.data.role}</h2>
+        <button onClick={() => navigate("/my-posts")}>My posts</button>
       </div>
     </div>
   );
