@@ -14,6 +14,7 @@ import MyPage from "./components/MyPage";
 import Menu from "./components/menu";
 import SiteBrowser from "./components/SiteBrowser";
 import CreatePost from "./components/CreatePost";
+import MyPosts from "./components/MyPosts";
 
 function AppContent() {
   const location = useLocation();
@@ -38,6 +39,7 @@ function AppContent() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/post_category" element={<PostCategories />} />
         <Route path="/create_post" element={<CreatePost />} />
+        <Route path="/my-posts" element={<MyPosts />} />
         <Route path="/feed" element={<Feed />} />
         <Route path="/page" element={<Page />} />
         <Route path="/my-page" element={<MyPage />} />

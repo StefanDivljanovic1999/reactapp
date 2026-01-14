@@ -1,0 +1,41 @@
+.myPostsDiv {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* LEVA ZONA – EDIT */
+.editMyPostsZone {
+  width: 10%;
+  background-color: rgba(0, 0, 255, 0.05);
+  border-right: 2px dashed rgba(0, 0, 255, 0.3);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #333;
+}
+
+/* SREDINA – POSTOVI */
+.MyPostsZone {
+  width: 80%;
+  padding: 20px;
+  gap: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* DESNA ZONA – DELETE */
+.deleteMyPostZone {
+  width: 10%;
+  background-color: rgba(255, 0, 0, 0.05);
+  border-left: 2px dashed rgba(255, 0, 0, 0.3);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #333;
+}
