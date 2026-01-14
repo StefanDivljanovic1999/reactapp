@@ -9,11 +9,11 @@ import { useState } from "react";
 import Profile from "./components/Profile";
 import PostCategories from "./components/PostCategories";
 import Feed from "./components/Feed";
-import Post from "./components/Post";
 import Page from "./components/Page";
 import MyPage from "./components/MyPage";
 import Menu from "./components/menu";
 import SiteBrowser from "./components/SiteBrowser";
+import CreatePost from "./components/CreatePost";
 
 function AppContent() {
   const location = useLocation();
@@ -37,7 +37,7 @@ function AppContent() {
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/post_category" element={<PostCategories />} />
-        <Route path="/post" element={<Post />} />
+        <Route path="/create_post" element={<CreatePost />} />
         <Route path="/feed" element={<Feed />} />
         <Route path="/page" element={<Page />} />
         <Route path="/my-page" element={<MyPage />} />

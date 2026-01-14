@@ -39,7 +39,7 @@ const NavBar = () => {
             <Link to={"feed"}>Feed</Link>
           </li>
           <li>
-            <Link to={"post"}>Create post</Link>
+            <Link to={"create_post"}>Create post</Link>
           </li>
           <li>
             <Link to={"post_category"}>Post categories</Link>

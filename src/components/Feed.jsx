@@ -2,23 +2,29 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useEffect, useCallback } from "react";
 import "../css/Feed.css";
-import { AiFillLike } from "react-icons/ai";
-import { div, input } from "framer-motion/client";
+import Post from "./Post";
 
 const Feed = () => {
+  /*feed nam je stranica koju korisnici u zavisnosti od uloge koriste za pregled i ostavljanje reakcija na postove, dok admin 
+  za sve to plus dodela statusa postu*/
+  /*na pocetku ucitavamo sve neophodne podatke pomocu kojih ce nas feed uspesno raditi*/
+  /*auth_token nam je neophodan da bismo mogli da bi admin mogao da izmeni status postova i da bi svaki korisnik mogao
+  da ostavi reakciju */
   const auth_token = window.sessionStorage.getItem("auth_token");
+  /*role nam je neophodan da bi diferencirali indterfejs u zavisnosti da li je korisnik admin ili drugi */
   const role = window.sessionStorage.getItem("role");
+  /*potrebno da bi se ostavila reakcija*/
   const user_id = Number(window.sessionStorage.getItem("user_id"));
-  const [likedPosts, setLikedPosts] = useState([]);
 
   const [posts, setPosts] = useState([]);
-  const [commentInput, setCommentInput] = useState(false);
-  const [comment, setCommment] = useState("");
+  const [likedPosts, setLikedPosts] = useState([]);
 
-  console.log(auth_token);
+  /*ucitavamo postove iz baze podataka preko axiosa  i komponentu posts setujemo da bi smo posle mogli lepo da ih prikazemo na stranici*/
+  /*useCallback cuva funkciju da je useeffect moze koristiti bez nepotrebnog kreiranja funkcije svaki put*/
   const fetchPosts = useCallback(async () => {
     try {
       const response = await axios.get("http://127.0.0.1:8000/api/posts", {
+        /*postove mogu da vide samo ulogovani korisnici */
         headers: { Authorization: "Bearer " + auth_token },
       });
       setPosts(response.data);
@@ -28,14 +34,13 @@ const Feed = () => {
     }
   }, [auth_token]);
 
+  /*svaki put osvezava stanje nase stranice kada se promeni auth token, odnosno kada se stranica pokrene */
   useEffect(() => {
     fetchPosts();
   }, [fetchPosts]);
 
-  const getUsernameFromEmail = (email) => {
-    return email.split("@")[0];
-  };
-
+  /*svi korisnici imaju pravo na lajk posta */
+  /*u formu za slanje backendu se unose id posta koji se lajkuje i status(1-like) , a user_id je id ulogovanog usera */
   const postLike = async (postID) => {
     try {
       const formData = new FormData();
@@ -47,6 +52,7 @@ const Feed = () => {
         { headers: { Authorization: "Bearer " + auth_token } }
       );
 
+      /*radi  vizuelnog prikaza broja lajkova i da li je ulogovani korisnik dao reakciju na post */
       setLikedPosts((prev) =>
         prev.includes(postID)
           ? prev.filter((id) => id !== postID)
@@ -54,6 +60,7 @@ const Feed = () => {
       );
 
       console.log(response.data);
+      /*da bi se osvezilo stanje sa lajkovima */
       fetchPosts();
     } catch (error) {
       console.log(error);
@@ -80,18 +87,15 @@ const Feed = () => {
     fetchPosts();
   }, []);
 
-  const postCommenet = (comment) => {
-    console.log(comment);
-  };
-
+  /*prenos idja posta kome ce admin dodeliti status */
   const handleDragStart = (e, postId) => {
     e.dataTransfer.setData("text/plain", postId);
   };
-
+  /*neophodan da bi  bio uspesan drop(onemogucuje defualt stanje) */
   const handleDragOver = (e) => {
     e.preventDefault();
   };
-
+  /*kada admin dodeli status post nestaje iz njegovog feed-a */
   const handleDrop = async (e, status) => {
     const id = Number(e.dataTransfer.getData("text/plain"));
     try {
@@ -127,50 +131,14 @@ const Feed = () => {
             {posts
               .filter((post) => post.status === "draft")
               .map((post) => (
-                <div
-                  className="divPostF"
+                <Post
                   key={post.id}
-                  draggable={role === "admin"}
-                  onDragStart={(e) => handleDragStart(e, post.id)}
-                >
-                  <h3 className="author">
-                    {getUsernameFromEmail(post.user.email)}
-                  </h3>
-                  <h1 className="h1Feed">{post.title}</h1>
-                  <p className="textAreaFeed">{post.content}</p>
-                  {post.picture && (
-                    <img
-                      className="imgFeed"
-                      src={`http://127.0.0.1:8000/${post.picture}`}
-                      alt={post.title}
-                    />
-                  )}
-                  <p>Likes: {post.likes_count}</p>
-                  <div className="reactions">
-                    <button
-                      className={
-                        likedPosts.includes(post.id) ? "liked" : "like"
-                      }
-                      onClick={() => postLike(post.id)}
-                    >
-                      <AiFillLike />
-                    </button>
-                    <button onClick={() => setCommentInput(true)}>
-                      Comment
-                    </button>
-                    {commentInput && (
-                      <div>
-                        <input
-                          onInput={(e) => setCommment(e.target.value)}
-                          value={comment}
-                        />
-                        <button onClick={() => postCommenet(comment)}>
-                          Post comment
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </div>
+                  post={post}
+                  liked={likedPosts.includes(post.id)}
+                  onLike={postLike}
+                  draggable
+                  onDragStart={handleDragStart}
+                />
               ))}
           </div>
 
@@ -186,48 +154,16 @@ const Feed = () => {
       {role !== "admin" && (
         <div className="postsContainer">
           {posts
-            .filter((post) => post.status != "rejected")
+            .filter((post) => post.status !== "rejected")
             .map((post) => (
-              <div
-                className="divPostF"
+              <Post
                 key={post.id}
-                draggable={role === "admin"}
-                onDragStart={(e) => handleDragStart(e, post.id)}
-              >
-                <h3 className="author">
-                  {getUsernameFromEmail(post.user.email)}
-                </h3>
-                <h1 className="h1Feed">{post.title}</h1>
-                <p className="textAreaFeed">{post.content}</p>
-                {post.picture && (
-                  <img
-                    className="imgFeed"
-                    src={`http://127.0.0.1:8000/${post.picture}`}
-                    alt={post.title}
-                  />
-                )}
-                <p>Likes: {post.likes_count}</p>
-                <div className="reactions">
-                  <button
-                    className={likedPosts.includes(post.id) ? "liked" : "like"}
-                    onClick={() => postLike(post.id)}
-                  >
-                    <AiFillLike />
-                  </button>
-                  <button onClick={() => setCommentInput(true)}>Comment</button>
-                  {commentInput && (
-                    <div>
-                      <input
-                        onInput={(e) => setCommment(e.target.value)}
-                        value={comment}
-                      />
-                      <button onClick={() => postCommenet(comment)}>
-                        Post comment
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
+                post={post}
+                liked={likedPosts.includes(post.id)}
+                onLike={postLike}
+                draggable={false}
+                onDragStart={handleDragStart}
+              />
             ))}
         </div>
       )}

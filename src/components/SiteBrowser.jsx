@@ -121,6 +121,8 @@ const SiteBrowser = () => {
 
       {site && (
         <div>
+          <button>Edit page</button>
+          <button>Delete page</button>
           <nav className="browserNavbar">
             <button className="backButton1" onClick={() => setSite(null)}>
               <IoMdArrowRoundBack />
@@ -132,7 +134,6 @@ const SiteBrowser = () => {
                 {s.title}
               </li>
             ))}
-            <button>edit</button>
           </nav>
           {page && <SitePage page={page} />}
         </div>
