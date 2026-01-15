@@ -1,4 +1,3 @@
-/* ========== PAGE LAYOUT ========== */
 .divPage {
   display: flex;
   height: 100vh;
@@ -6,7 +5,6 @@
   box-sizing: border-box;
 }
 
-/* ========== LEFT SIDEBAR ========== */
 .divElements {
   display: flex;
   flex-direction: column;
@@ -28,7 +26,6 @@
   margin: 6px 0;
 }
 
-/* ========== EDIT BUTTONS ========== */
 .EditButtons {
   display: flex;
   flex-direction: column;
@@ -38,7 +35,6 @@
   background: #f4f4f4;
 }
 
-/* ========== DROP AREA ========== */
 .divDrop {
   flex: 1;
   display: flex;
@@ -49,7 +45,6 @@
   overflow-y: auto;
 }
 
-/* ========== HEADER ZONE ========== */
 .divHeader {
   display: flex;
   flex-direction: column;
@@ -65,7 +60,6 @@
   cursor: text;
 }
 
-/* Drop zona u headeru */
 .headerAbout {
   min-height: 60px;
   padding: 10px;
@@ -73,7 +67,6 @@
   border: 2px dashed #333;
 }
 
-/* ========== CONTENT ZONE ========== */
 .divContent {
   flex: 1;
   min-height: 300px;
@@ -84,9 +77,9 @@
   flex-direction: column;
   gap: 10px;
   overflow-y: auto;
+  align-items: center;
 }
 
-/* ========== DROPPED ELEMENTS ========== */
 .divContent h1,
 .divContent h2,
 .divContent p {
@@ -99,7 +92,7 @@
 }
 
 .divContent p {
-  white-space: pre-wrap; /* čuva sve razmake i nove linije */
+  white-space: pre-wrap;
 }
 
 .divContent img {
@@ -115,38 +108,73 @@
 .landing {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* cela visina ekrana */
+  height: 100vh;
   width: 100%;
 }
 
-/* HERO */
 .landing-hero {
-  flex: 2; /* srednji deo, možeš prilagoditi */
-  background-color: #f0f8ff; /* samo da se vidi sekcija */
+  flex: 2;
+  background-color: #f0f8ff;
   padding: 10px;
   overflow-y: auto;
 }
 
-/* FEATURES */
 .landing-features {
-  flex: 3; /* veći deo */
+  flex: 3;
   background-color: #f5f5f5;
   padding: 10px;
   overflow-y: auto;
 }
 
-/* CTA */
 .landing-CTA {
-  flex: 1; /* manji deo */
+  flex: 1;
   background-color: #e0e0e0;
   padding: 10px;
   overflow-y: auto;
 }
 
-/* elementi unutar sekcija */
 .hero-element,
 .feature-card,
 .cta-box > * {
-  width: 100%; /* full width */
-  margin-bottom: 10px; /* razmak između elemenata */
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+/*dodavanje stilizacije za preview pagea*/
+.previewOverlay {
+  position: fixed;
+  inset: 0; /* top, right, bottom, left = 0 */
+  background: rgba(255, 255, 255, 0.95);
+  z-index: 10000;
+  overflow-y: auto;
+  padding: 40px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.previewHeader {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  background: rgba(255, 255, 255, 0.95);
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #ccc;
+  z-index: 10001;
+}
+
+.previewHeader button {
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.previewOverlay .divHeader,
+.previewOverlay .divContent {
+  border: none;
+  background: transparent;
 }

@@ -15,6 +15,8 @@ const Page = () => {
   const [title, setTitle] = useState(null);
   const auth_token = window.sessionStorage.getItem("auth_token");
   const [landingData, setLandingData] = useState(null);
+  /*dodajemo mogucnost da korsnik moze da vidi preview svoje stranice */
+  const [previewMode, setPreviewMode] = useState(false);
 
   const handleDragStart = (e, type) => {
     e.dataTransfer.setData("text/plain", type);
@@ -153,61 +155,99 @@ const Page = () => {
 
   return (
     <div className="divPage">
-      <div className="divElements">
-        <div className="divTemplate">
-          <h3>Choose template: </h3>
-          <button onClick={() => setTemplate("blog")}>Blog</button>
-          <button onClick={() => setTemplate("landing")}>Landing</button>
-          {template && (
-            <p>
-              You choose: <b>{template}</b>
-            </p>
+      {!previewMode && (
+        <>
+          {" "}
+          <div className="divElements">
+            {/*div koji se nalazi sa leve strane i u kome se nalaze nasi elementi */}
+            <div className="divTemplate">
+              <h3>Choose template: </h3>
+              {/*u zavisnosti od izbora templatea drop zona se menja */}
+              <button onClick={() => setTemplate("blog")}>Blog</button>
+              <button onClick={() => setTemplate("landing")}>Landing</button>
+              {template && (
+                <p>
+                  You choose: <b>{template}</b>
+                </p>
+              )}
+            </div>
+            <hr style={{ width: "100%", border: "1px solid black" }} />
+            {template && (
+              /*ako je zavisno od templatea pojavljuju se elementi */
+              /*elements su nasa komponenta u kojoj se nalaze dole navedeni elementi */
+              <Elements
+                allowedElements={
+                  template === "blog"
+                    ? ["h1", "h2", "p", "img"]
+                    : ["h1", "p", "button", "img"]
+                }
+                /*drop dobija informaciju koji tip elementa smo prevukli */
+                handleDragStart={handleDragStart}
+                /*pregled kako izgleda nasa slika na browseru */
+                preview={preview}
+                handleImage={handleImage}
+              />
+            )}
+          </div>
+          <div className="EditButtons">
+            <button onClick={handleCreatePage}>Create page!</button>
+            <button onClick={() => setPreviewMode((prev) => !prev)}>
+              {/*Svaki put kada se klikne menja se stanje, pa se menja i tekst dugmeta*/}
+              {previewMode ? "Back to edit" : "Preview"}
+            </button>
+            <button>Discard all</button>
+          </div>
+          {template === "blog" && (
+            /*komponenta blog template u ovom slucaju predstavlja drop zonu i opisuje njeno ponasanje u zavisnosti od toga koji 
+        je element dropovan na nju */
+            /*ona je podljena na about deo i elements deo, omoguceno je resizovanje slika */
+            <BlogTemplate
+              title={title}
+              setTitle={setTitle}
+              elements={elements}
+              aboutElements={aboutElements}
+              handleDrop={handleDrop}
+              handleDragOver={handleDragOver}
+              handleSet={handleSet}
+              handleDelete={handleDelete}
+              handleResize={handleResize}
+              preview={preview}
+              handleDragStart={handleDragStart}
+              previewMode={previewMode}
+            />
           )}
-        </div>
-        <hr style={{ width: "100%", border: "1px solid black" }} />
-        {template && (
-          <Elements
-            allowedElements={
-              template === "blog"
-                ? ["h1", "h2", "p", "img"]
-                : ["h1", "p", "button", "img"]
-            }
-            handleDragStart={handleDragStart}
-            preview={preview}
-            handleImage={handleImage}
-          />
-        )}
-      </div>
-
-      <div className="EditButtons">
-        <button onClick={handleCreatePage}>Create page!</button>
-        <button>Preview</button>
-        <button>Discard all</button>
-      </div>
-
-      {template === "blog" && (
-        <BlogTemplate
-          title={title}
-          setTitle={setTitle}
-          elements={elements}
-          aboutElements={aboutElements}
-          handleDrop={handleDrop}
-          handleDragOver={handleDragOver}
-          handleSet={handleSet}
-          handleDelete={handleDelete}
-          handleResize={handleResize}
-          preview={preview}
-          handleDragStart={handleDragStart}
-        />
+          {template === "landing" && (
+            <LandingTemplate
+              onChange={setLandingData}
+              preview={preview}
+              handleDragStart={handleDragStart}
+              handleResize={handleResize}
+              previewMode={previewMode}
+            />
+          )}
+        </>
       )}
 
-      {template === "landing" && (
-        <LandingTemplate
-          onChange={setLandingData}
-          preview={preview}
-          handleDragStart={handleDragStart}
-          handleResize={handleResize}
-        />
+      {/* Fullscreen preview */}
+      {previewMode && (
+        <div className="previewOverlay">
+          <div className="previewHeader">
+            <button onClick={() => setPreviewMode(false)}>Back to edit</button>
+          </div>
+
+          {template === "blog" && (
+            <BlogTemplate
+              previewMode={true}
+              title={title}
+              elements={elements}
+              aboutElements={aboutElements}
+            />
+          )}
+
+          {template === "landing" && (
+            <LandingTemplate previewMode={true} data={landingData} />
+          )}
+        </div>
       )}
     </div>
   );

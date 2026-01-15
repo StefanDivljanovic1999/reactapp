@@ -1,20 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
-import { useEffect } from "react";
 import FeatureCard from "./FeatureCard";
 import { ResizableBox } from "react-resizable";
 import "react-resizable/css/styles.css";
 
-const LandingTemplate = ({
-  onChange,
-  preview,
-  handleDragStart,
-  handleResize,
-}) => {
+const LandingTemplate = ({ onChange, preview, handleResize, previewMode }) => {
   const HERO_ALLOWED = ["h1", "p", "button", "img"];
+
+  const [title, setTitle] = useState("");
   const [hero, setHero] = useState([]);
   const [features, setFeatures] = useState([]);
-  const [title, setTitle] = useState("");
   const [cta, setCta] = useState({
     heading: "CTA heading",
     text: "CTA description",
@@ -22,156 +17,139 @@ const LandingTemplate = ({
   });
 
   useEffect(() => {
-    if (onChange) {
-      onChange({
-        title,
-        hero,
-        features,
-        cta,
-      });
-    }
-  }, [title, hero, features, cta]);
+    onChange?.({ title, hero, features, cta });
+  }, [title, hero, features, cta, onChange]);
 
   const handleDragOver = (e) => {
-    e.preventDefault();
+    if (!previewMode) e.preventDefault();
   };
 
   const handleHeroDrop = (e) => {
+    if (previewMode) return;
     e.preventDefault();
 
     const type = e.dataTransfer.getData("text/plain");
+    if (!HERO_ALLOWED.includes(type)) return;
 
-    if (!HERO_ALLOWED.includes(type)) {
-      alert("This element is not allowed in hero...");
-      return;
-    }
-
-    const newElement = {
-      id: nanoid(),
-      type: type,
-      value: type === "img" ? null : "Edit text",
-      image: type === "img" ? preview : null,
-    };
-
-    setHero((prev) => [...prev, newElement]);
+    setHero((prev) => [
+      ...prev,
+      {
+        id: nanoid(),
+        type,
+        value: type === "img" ? null : "Edit text",
+        src: type === "img" ? preview : null,
+        width: 300,
+        height: 200,
+      },
+    ]);
   };
 
-  const handleHeroSet = (value, id) => {
+  const handleHeroSet = (id, value) => {
+    setHero((prev) => prev.map((el) => (el.id === id ? { ...el, value } : el)));
+  };
+
+  const handleHeroResize = (id, width, height) => {
     setHero((prev) =>
-      prev.map((heroEl) =>
-        heroEl.id === id ? { ...heroEl, value: value } : heroEl
-      )
+      prev.map((el) => (el.id === id ? { ...el, width, height } : el))
     );
+  };
+
+  const handleHeroDelete = (id) => {
+    setHero((prev) => prev.filter((el) => el.id !== id));
   };
 
   const addFeature = () => {
     setFeatures((prev) => [
       ...prev,
-      {
-        id: nanoid(),
-        title: "Feature title",
-        text: "Feature description",
-      },
+      { id: nanoid(), title: "Feature title", text: "Feature description" },
     ]);
   };
 
   const handleFeatureSet = (id, field, value) => {
     setFeatures((prev) =>
-      prev.map((feature) =>
-        feature.id === id ? { ...feature, [field]: value } : feature
-      )
+      prev.map((f) => (f.id === id ? { ...f, [field]: value } : f))
     );
   };
 
   const handleDeleteFeature = (id) => {
-    setFeatures((prev) => prev.filter((feature) => feature.id !== id));
+    setFeatures((prev) => prev.filter((f) => f.id !== id));
   };
 
   const handleCtaSet = (field, value) => {
-    setCta((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+    setCta((prev) => ({ ...prev, [field]: value }));
   };
 
   return (
-    <div className="landing">
+    <div className={`landing ${previewMode ? "preview" : ""}`}>
       <section
         className="landing-hero"
         onDragOver={handleDragOver}
         onDrop={handleHeroDrop}
       >
         <h2>Hero section</h2>
-        {hero.length === 0 && (
+
+        {previewMode ? (
+          <h1>{title}</h1>
+        ) : (
+          <h1
+            contentEditable
+            suppressContentEditableWarning
+            onInput={(e) => setTitle(e.currentTarget.innerText)}
+          >
+            {title || "Enter page title here..."}
+          </h1>
+        )}
+
+        {hero.length === 0 && !previewMode && (
           <div className="landing-box">Drop hero elements here</div>
         )}
 
-        <h1
-          contentEditable
-          suppressContentEditableWarning
-          onInput={(e) => setTitle(e.target.innerText)}
-        >
-          Enter page title here...
-        </h1>
-
         {hero.map((el) => (
           <div key={el.id} className="hero-element">
-            {el.type === "h1" && (
-              <h1
-                contentEditable
-                suppressContentEditableWarning
-                onBlur={(e) => handleHeroSet(e.target.innerText, el.id)}
-              >
-                {el.value}
-              </h1>
-            )}
+            {["h1", "p", "button"].includes(el.type) &&
+              (previewMode
+                ? React.createElement(el.type, {}, el.value)
+                : React.createElement(el.type, {
+                    contentEditable: true,
+                    suppressContentEditableWarning: true,
+                    onBlur: (e) =>
+                      handleHeroSet(el.id, e.currentTarget.innerText),
+                    children: el.value,
+                  }))}
 
-            {el.type === "p" && (
-              <p
-                contentEditable
-                suppressContentEditableWarning
-                onBlur={(e) => handleHeroSet(e.target.innerText, el.id)}
-              >
-                {el.value}
-              </p>
-            )}
+            {el.type === "img" &&
+              (previewMode ? (
+                <img
+                  src={el.src}
+                  alt="hero"
+                  style={{ width: "100%", height: "auto" }}
+                />
+              ) : (
+                <ResizableBox
+                  width={el.width}
+                  height={el.height}
+                  minConstraints={[100, 100]}
+                  maxConstraints={[800, 600]}
+                  onResizeStop={(e, data) =>
+                    handleHeroResize(el.id, data.size.width, data.size.height)
+                  }
+                >
+                  <img
+                    src={el.src}
+                    alt="hero"
+                    style={{ width: "100%", height: "100%" }}
+                  />
+                </ResizableBox>
+              ))}
 
-            {el.type === "button" && (
+            {!previewMode && (
               <button
-                contentEditable
-                suppressContentEditableWarning
-                onBlur={(e) => handleHeroSet(e.target.innerText, el.id)}
+                className="deleteButton"
+                onClick={() => handleHeroDelete(el.id)}
               >
-                {el.value || "click me!"}
+                ✕
               </button>
             )}
-
-            {el.type === "img" && (
-              <ResizableBox
-                width={300}
-                height={200}
-                minConstraints={[100, 100]}
-                maxConstraints={[800, 600]}
-                onResizeStop={(e, data) =>
-                  handleResize(el.id, data.size.width, data.size.height)
-                }
-              >
-                <img
-                  src={el.preview || el.image}
-                  alt="slika"
-                  style={{ width: "100%", height: "100%" }}
-                />
-              </ResizableBox>
-            )}
-
-            <button
-              className="deleteButton"
-              onClick={() =>
-                setHero((prev) => prev.filter((x) => x.id !== el.id))
-              }
-            >
-              X
-            </button>
           </div>
         ))}
       </section>
@@ -179,9 +157,10 @@ const LandingTemplate = ({
       <section className="landing-features">
         <h2>Features section</h2>
 
-        <button onClick={addFeature}>Add feature + </button>
+        {!previewMode && <button onClick={addFeature}>Add feature +</button>}
 
         {features.length === 0 && <p>No features yet...</p>}
+
         <div className="features-box">
           {features.map((feature) => (
             <FeatureCard
@@ -189,6 +168,7 @@ const LandingTemplate = ({
               feature={feature}
               handleFeatureSet={handleFeatureSet}
               handleDeleteFeature={handleDeleteFeature}
+              previewMode={previewMode}
             />
           ))}
         </div>
@@ -196,30 +176,45 @@ const LandingTemplate = ({
 
       <section className="landing-CTA">
         <h2>CTA</h2>
+
         <div className="cta-box">
-          <h3
-            contentEditable
-            suppressContentEditableWarning
-            onBlur={(e) => handleCtaSet("heading", e.target.innerText.trim())}
-          >
-            {cta.heading}
-          </h3>
+          {previewMode ? (
+            <>
+              <h3>{cta.heading}</h3>
+              <p>{cta.text}</p>
+              <button>{cta.button}</button>
+            </>
+          ) : (
+            <>
+              <h3
+                contentEditable
+                suppressContentEditableWarning
+                onBlur={(e) =>
+                  handleCtaSet("heading", e.currentTarget.innerText)
+                }
+              >
+                {cta.heading}
+              </h3>
 
-          <p
-            contentEditable
-            suppressContentEditableWarning
-            onBlur={(e) => handleCtaSet("text", e.target.innerText.trim())}
-          >
-            {cta.text}
-          </p>
+              <p
+                contentEditable
+                suppressContentEditableWarning
+                onBlur={(e) => handleCtaSet("text", e.currentTarget.innerText)}
+              >
+                {cta.text}
+              </p>
 
-          <button
-            contentEditable
-            suppressContentEditableWarning
-            onBlur={(e) => handleCtaSet("button", e.target.innerText.trim())}
-          >
-            {cta.button}
-          </button>
+              <button
+                contentEditable
+                suppressContentEditableWarning
+                onBlur={(e) =>
+                  handleCtaSet("button", e.currentTarget.innerText)
+                }
+              >
+                {cta.button}
+              </button>
+            </>
+          )}
         </div>
       </section>
     </div>
