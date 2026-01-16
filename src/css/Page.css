@@ -178,3 +178,19 @@
   border: none;
   background: transparent;
 }
+
+.frontPageDiv {
+  padding: 100px;
+  width: 100vw;
+  background-color: aliceblue;
+}
+
+.frontDropDiv {
+  border: 2px dashed #aaa;
+  padding: "20px";
+  background-color: blur;
+  border-radius: 12px;
+  backdrop-filter: blur(6px); /* ovo daje blur efekat */
+  background-color: rgba(255, 255, 255, 0.01); /* poluprovidna bela */
+  transition: all 0.3s ease;
+}

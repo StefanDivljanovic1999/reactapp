@@ -56,6 +56,26 @@ const Elements = ({
         </>
       )}
 
+      {allowedElements.includes("backgroundImg") && (
+        <>
+          <input type="file" onChange={handleImage} />
+          <CiImageOn />
+          {preview && (
+            <img
+              alt="preview"
+              draggable
+              onDragStart={(e) => handleDragStart(e, "backgroundImg")}
+              style={{
+                border: "1px dashed black",
+                padding: "10px",
+                marginTop: "10px",
+                cursor: "grab",
+              }}
+            />
+          )}
+        </>
+      )}
+
       {allowedElements.includes("button") && (
         <button
           className="buttonE"

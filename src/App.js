@@ -15,6 +15,7 @@ import Menu from "./components/menu";
 import SiteBrowser from "./components/SiteBrowser";
 import CreatePost from "./components/CreatePost";
 import MyPosts from "./components/MyPosts";
+import FrontPage from "./components/FrontPage";
 
 function AppContent() {
   const location = useLocation();
@@ -45,6 +46,7 @@ function AppContent() {
         <Route path="/my-page" element={<MyPage />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/browser" element={<SiteBrowser />} />
+        <Route path="/front" element={<FrontPage />} />
       </Routes>
     </>
   );

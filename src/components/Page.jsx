@@ -5,6 +5,7 @@ import "react-resizable/css/styles.css";
 import BlogTemplate from "./BlogTemplate";
 import LandingTemplate from "./LandingTemplate";
 import Elements from "./Elements";
+import FrontPage from "./FrontPage";
 
 const Page = () => {
   const [elements, setElements] = useState([]);
@@ -17,6 +18,16 @@ const Page = () => {
   const [landingData, setLandingData] = useState(null);
   /*dodajemo mogucnost da korsnik moze da vidi preview svoje stranice */
   const [previewMode, setPreviewMode] = useState(false);
+
+  /*dodajemo elemente za front page */
+  const [frontTitle, setFrontTitle] = useState(null);
+  const [frontElements, setFrontElements] = useState([]);
+  const [frontTitleStyle, setFrontTitleStyle] = useState({
+    color: "#000000",
+    fontSize: 48,
+    textAlign: "center",
+  });
+  const [frontBackground, setFrontBackground] = useState(null);
 
   const handleDragStart = (e, type) => {
     e.dataTransfer.setData("text/plain", type);
@@ -138,6 +149,21 @@ const Page = () => {
       };
     }
 
+    if (template === "front") {
+      if (!frontTitle)
+        alert("Front page title is empty! Using default title...");
+      payload = {
+        title: frontTitle,
+        template: template,
+        layout: {
+          title: frontTitle,
+          frontTitleStyle: frontTitleStyle,
+          background: frontBackground,
+          elements: frontElements,
+        },
+      };
+    }
+
     try {
       await axios.post("http://127.0.0.1:8000/api/pages", payload, {
         headers: {
@@ -163,8 +189,10 @@ const Page = () => {
             <div className="divTemplate">
               <h3>Choose template: </h3>
               {/*u zavisnosti od izbora templatea drop zona se menja */}
+              <button onClick={() => setTemplate("front")}>Front page</button>
               <button onClick={() => setTemplate("blog")}>Blog</button>
               <button onClick={() => setTemplate("landing")}>Landing</button>
+
               {template && (
                 <p>
                   You choose: <b>{template}</b>
@@ -179,7 +207,9 @@ const Page = () => {
                 allowedElements={
                   template === "blog"
                     ? ["h1", "h2", "p", "img"]
-                    : ["h1", "p", "button", "img"]
+                    : template === "landing"
+                    ? ["h1", "p", "button", "img"]
+                    : ["h1", "h2", "p"]
                 }
                 /*drop dobija informaciju koji tip elementa smo prevukli */
                 handleDragStart={handleDragStart}
@@ -199,7 +229,7 @@ const Page = () => {
           </div>
           {template === "blog" && (
             /*komponenta blog template u ovom slucaju predstavlja drop zonu i opisuje njeno ponasanje u zavisnosti od toga koji 
-        je element dropovan na nju */
+              je element dropovan na nju */
             /*ona je podljena na about deo i elements deo, omoguceno je resizovanje slika */
             <BlogTemplate
               title={title}
@@ -223,6 +253,19 @@ const Page = () => {
               handleDragStart={handleDragStart}
               handleResize={handleResize}
               previewMode={previewMode}
+            />
+          )}
+          {template === "front" && (
+            <FrontPage
+              title={frontTitle}
+              setTitle={setFrontTitle}
+              frontTitleStyle={frontTitleStyle}
+              setFrontTitleStyle={setFrontTitleStyle}
+              frontBackground={frontBackground}
+              setFrontBackground={setFrontBackground}
+              frontElements={frontElements}
+              setFrontElements={setFrontElements}
+              handleDragStart={handleDragStart}
             />
           )}
         </>
