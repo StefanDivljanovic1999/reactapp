@@ -183,7 +183,6 @@ const MyPage = () => {
           </div>
         </div>
       )}
-
       {page && page.template === "blog" && (
         <div className="PageDiv" style={{ padding: "100px" }}>
           <button onClick={() => setPage(null)}>Back to My pages</button>
@@ -302,7 +301,6 @@ const MyPage = () => {
           })}
         </div>
       )}
-
       {page && page.template === "landing" && (
         <div className="PageDiv" style={{ padding: "100px" }}>
           <button onClick={() => setPage(null)}>Back to My pages</button>
@@ -335,6 +333,146 @@ const MyPage = () => {
           <h3>{page.layout.cta?.heading}</h3>
           <p>{page.layout.cta?.text}</p>
           <button>{page.layout.cta?.button}</button>
+        </div>
+      )}
+
+      {page && page.template === "front" && (
+        <div
+          className="PageDiv"
+          style={{
+            minHeight: "100vh",
+            padding: "50px",
+            backgroundImage: page.layout.background
+              ? `url(${page.layout.background})`
+              : "none",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            color: "#fff",
+            overflowY: "auto",
+          }}
+        >
+          <button onClick={() => setPage(null)}>Back to My pages</button>
+
+          {enableEdit === false ? (
+            <button onClick={() => setEnableEdit(true)}>Edit page</button>
+          ) : (
+            <div>
+              <button onClick={() => setEnableEdit(false)}>Stop editing</button>
+              <button onClick={handleEdit}>Update page!</button>
+            </div>
+          )}
+
+          <button onClick={handleDeletePage}>Delete page</button>
+
+          <h1
+            contentEditable={enableEdit}
+            suppressContentEditableWarning
+            style={{
+              color: page.layout.frontTitleStyle.color,
+              fontSize: `${page.layout.frontTitleStyle.fontSize}px`,
+              textAlign: page.layout.frontTitleStyle.textAlign,
+              marginBottom: "40px",
+            }}
+            onBlur={(e) =>
+              enableEdit &&
+              setPage({
+                ...page,
+                layout: {
+                  ...page.layout,
+                  title: e.target.innerText,
+                },
+              })
+            }
+          >
+            {page.layout.title || page.title}
+          </h1>
+
+          <div
+            style={{
+              border: "2px dashed #aaa",
+              padding: "20px",
+              borderRadius: "12px",
+              backdropFilter: "blur(6px)",
+              backgroundColor: "rgba(255, 255, 255, 0.01)",
+              transition: "all 0.3s ease",
+            }}
+          >
+            {page.layout.elements.map((el, index) => {
+              const style = {
+                marginBottom: "24px",
+                color: el.style.color,
+                textAlign: el.style.textAlign,
+              };
+
+              return (
+                <div
+                  key={el.id}
+                  style={{
+                    position: "relative",
+                    padding: "8px",
+                    border:
+                      enableEdit && editIndex === index
+                        ? "1px dashed #ccc"
+                        : "none",
+                  }}
+                >
+                  {enableEdit && editIndex === index ? (
+                    <div>
+                      {(el.type === "h1" || el.type === "h2") && (
+                        <input
+                          type="text"
+                          value={editValue}
+                          onChange={(e) => setEditValue(e.target.value)}
+                        />
+                      )}
+                      {el.type === "p" && (
+                        <textarea
+                          value={editValue}
+                          onChange={(e) => setEditValue(e.target.value)}
+                        />
+                      )}
+                      <button
+                        onClick={() => {
+                          const newElements = [...page.layout.elements];
+                          newElements[index] = {
+                            ...newElements[index],
+                            value: editValue,
+                          };
+                          setPage({
+                            ...page,
+                            layout: { ...page.layout, elements: newElements },
+                          });
+                          setEditIndex(null);
+                        }}
+                      >
+                        Save
+                      </button>
+                      <button onClick={() => setEditIndex(null)}>Cancel</button>
+                    </div>
+                  ) : (
+                    <>
+                      {el.type === "h1" && <h1 style={style}>{el.value}</h1>}
+                      {el.type === "h2" && <h2 style={style}>{el.value}</h2>}
+                      {el.type === "p" && <p style={style}>{el.value}</p>}
+
+                      {enableEdit && el.type !== "img" && (
+                        <button
+                          style={{ marginTop: "8px" }}
+                          onClick={() => {
+                            setEditIndex(index);
+                            setEditValue(el.value);
+                          }}
+                        >
+                          Edit
+                        </button>
+                      )}
+                    </>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>
