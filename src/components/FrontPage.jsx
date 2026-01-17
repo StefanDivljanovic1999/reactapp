@@ -12,6 +12,7 @@ const FrontPage = ({
   frontBackground,
   setFrontBackground,
   handleDragStart,
+  previewMode,
 }) => {
   const auth_token = window.sessionStorage.getItem("auth_token");
 
@@ -54,187 +55,253 @@ const FrontPage = ({
       onDragOver={(e) => e.preventDefault()}
       onDrop={handleDrop}
       style={{
-        minHeight: "400px",
+        minHeight: "100vh",
+
         padding: "50px",
-        backgroundImage: preview ? `url(${preview})` : "none",
+        backgroundImage: preview
+          ? `url(${preview})`
+          : frontBackground
+            ? `url(${frontBackground})`
+            : "none",
+
         backgroundSize: "cover",
         backgroundPosition: "center",
         flexWrap: "wrap",
-        overflow: "auto",
+        overflowY: "auto",
+        overflowX: "hidden",
       }}
     >
-      <div style={{ marginBottom: "20px" }}>
-        <h3>Choose background:</h3>
-        <input type="file" onChange={handleBackgroundImage} />
-      </div>
-
+      {!previewMode && (
+        <div style={{ marginBottom: "20px" }}>
+          <h3>Choose background:</h3>
+          <input type="file" onChange={handleBackgroundImage} />
+        </div>
+      )}
       {/* Title */}
       <div style={{ marginBottom: "30px" }}>
-        <h1
-          contentEditable
-          suppressContentEditableWarning
-          style={{
-            color: frontTitleStyle.color,
-            fontSize: `${frontTitleStyle.fontSize || 48}px`,
-            textAlign: frontTitleStyle.textAlign,
-          }}
-          onBlur={(e) => setTitle(e.target.innerText)}
-        >
-          {title || "Front Page Title"}
-        </h1>
-
-        {/* Title color */}
-        <input
-          type="color"
-          value={frontTitleStyle.color}
-          onChange={(e) =>
-            setFrontTitleStyle({ ...frontTitleStyle, color: e.target.value })
-          }
-        />
-
-        <div style={{ marginTop: "10px", marginBottom: "20px" }}>
-          <label>Font size: {frontTitleStyle.fontSize}px</label>
-          <input
-            type="range"
-            min="20"
-            max="250"
-            value={frontTitleStyle.fontSize}
-            onChange={(e) =>
-              setFrontTitleStyle({
-                ...frontTitleStyle,
-                fontSize: parseInt(e.target.value),
-              })
-            }
-          />
-        </div>
-
-        {/* Title alignment */}
-        <select
-          value={frontTitleStyle.textAlign}
-          onChange={(e) =>
-            setFrontTitleStyle({
-              ...frontTitleStyle,
-              textAlign: e.target.value,
-            })
-          }
-        >
-          <option value="left">Left</option>
-          <option value="center">Center</option>
-          <option value="right">Right</option>
-        </select>
-      </div>
-
-      {/* Elements drag & drop */}
-      <div
-        className="frontDropDiv"
-        onDragOver={(e) => e.preventDefault()}
-        onDrop={handleDrop}
-      >
-        <h3>Drop elements here:</h3>
-        {frontElements.map((el) => (
-          <div key={el.id} style={{ marginBottom: "15px" }}>
-            {el.type === "h1" && (
-              <h1
-                contentEditable
-                suppressContentEditableWarning
-                style={{
-                  color: el.style.color,
-                  textAlign: el.style.textAlign,
-                }}
-                onBlur={(e) => {
-                  const value = e.target.innerText;
-                  setFrontElements((prev) =>
-                    prev.map((item) =>
-                      item.id === el.id ? { ...item, value } : item
-                    )
-                  );
-                }}
-              >
-                {el.value}
-              </h1>
-            )}
-            {el.type === "h2" && (
-              <h2
-                contentEditable
-                suppressContentEditableWarning
-                style={{
-                  color: el.style.color,
-                  textAlign: el.style.textAlign,
-                }}
-                onBlur={(e) => {
-                  const value = e.target.innerText;
-                  setFrontElements((prev) =>
-                    prev.map((item) =>
-                      item.id === el.id ? { ...item, value } : item
-                    )
-                  );
-                }}
-              >
-                {el.value}
-              </h2>
-            )}
-            {el.type === "p" && (
-              <p
-                contentEditable
-                suppressContentEditableWarning
-                style={{
-                  color: el.style.color,
-                  textAlign: el.style.textAlign,
-                }}
-                onBlur={(e) => {
-                  const value = e.target.innerText;
-                  setFrontElements((prev) =>
-                    prev.map((item) =>
-                      item.id === el.id ? { ...item, value } : item
-                    )
-                  );
-                }}
-              >
-                {el.value}
-              </p>
-            )}
-
-            {/* Element color */}
+        {previewMode ? (
+          <h1
+            style={{
+              color: frontTitleStyle.color || "black",
+              fontSize: `${frontTitleStyle.fontSize || 48}px`,
+              textAlign: frontTitleStyle.textAlign || "left",
+            }}
+          >
+            {title || "Front Page Title"}
+          </h1>
+        ) : (
+          <>
+            {" "}
+            <h1
+              contentEditable
+              suppressContentEditableWarning
+              style={{
+                color: frontTitleStyle.color || "black",
+                fontSize: `${frontTitleStyle.fontSize || 48}px`,
+                textAlign: frontTitleStyle.textAlign || "left",
+              }}
+              onBlur={(e) => setTitle(e.target.innerText)}
+            >
+              {title || "Front Page Title"}
+            </h1>
             <input
               type="color"
-              value={el.style.color}
+              value={frontTitleStyle.color}
               onChange={(e) =>
-                setFrontElements((prev) =>
-                  prev.map((item) =>
-                    item.id === el.id
-                      ? {
-                          ...item,
-                          style: { ...item.style, color: e.target.value },
-                        }
-                      : item
-                  )
-                )
+                setFrontTitleStyle({
+                  ...frontTitleStyle,
+                  color: e.target.value,
+                })
               }
             />
-
-            {/* Element alignment */}
+            <div style={{ marginTop: "10px", marginBottom: "20px" }}>
+              <label>Font size: {frontTitleStyle.fontSize}px</label>
+              <input
+                type="range"
+                min="20"
+                max="250"
+                value={frontTitleStyle.fontSize}
+                onChange={(e) =>
+                  setFrontTitleStyle({
+                    ...frontTitleStyle,
+                    fontSize: parseInt(e.target.value),
+                  })
+                }
+              />
+            </div>
+            {/* Title alignment */}
             <select
-              value={el.style.textAlign}
+              value={frontTitleStyle.textAlign}
               onChange={(e) =>
-                setFrontElements((prev) =>
-                  prev.map((item) =>
-                    item.id === el.id
-                      ? {
-                          ...item,
-                          style: { ...item.style, textAlign: e.target.value },
-                        }
-                      : item
-                  )
-                )
+                setFrontTitleStyle({
+                  ...frontTitleStyle,
+                  textAlign: e.target.value,
+                })
               }
             >
               <option value="left">Left</option>
               <option value="center">Center</option>
               <option value="right">Right</option>
             </select>
-          </div>
-        ))}
+          </>
+        )}
       </div>
+
+      {/* Elements drag & drop */}
+      {!previewMode && (
+        <div
+          className="frontDropDiv"
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={handleDrop}
+        >
+          <h3>Drop elements here:</h3>
+          {frontElements.map((el) => (
+            <div key={el.id} style={{ marginBottom: "15px" }}>
+              {el.type === "h1" && (
+                <h1
+                  contentEditable
+                  suppressContentEditableWarning
+                  style={{
+                    color: el.style.color,
+                    textAlign: el.style.textAlign,
+                  }}
+                  onBlur={(e) => {
+                    const value = e.target.innerText;
+                    setFrontElements((prev) =>
+                      prev.map((item) =>
+                        item.id === el.id ? { ...item, value } : item,
+                      ),
+                    );
+                  }}
+                >
+                  {el.value}
+                </h1>
+              )}
+              {el.type === "h2" && (
+                <h2
+                  contentEditable
+                  suppressContentEditableWarning
+                  style={{
+                    color: el.style.color,
+                    textAlign: el.style.textAlign,
+                  }}
+                  onBlur={(e) => {
+                    const value = e.target.innerText;
+                    setFrontElements((prev) =>
+                      prev.map((item) =>
+                        item.id === el.id ? { ...item, value } : item,
+                      ),
+                    );
+                  }}
+                >
+                  {el.value}
+                </h2>
+              )}
+              {el.type === "p" && (
+                <p
+                  contentEditable
+                  suppressContentEditableWarning
+                  style={{
+                    color: el.style.color,
+                    textAlign: el.style.textAlign,
+                  }}
+                  onBlur={(e) => {
+                    const value = e.target.innerText;
+                    setFrontElements((prev) =>
+                      prev.map((item) =>
+                        item.id === el.id ? { ...item, value } : item,
+                      ),
+                    );
+                  }}
+                >
+                  {el.value}
+                </p>
+              )}
+
+              {/* Element color */}
+              <input
+                type="color"
+                value={el.style.color}
+                onChange={(e) =>
+                  setFrontElements((prev) =>
+                    prev.map((item) =>
+                      item.id === el.id
+                        ? {
+                            ...item,
+                            style: { ...item.style, color: e.target.value },
+                          }
+                        : item,
+                    ),
+                  )
+                }
+              />
+
+              {/* Element alignment */}
+              <select
+                value={el.style.textAlign}
+                onChange={(e) =>
+                  setFrontElements((prev) =>
+                    prev.map((item) =>
+                      item.id === el.id
+                        ? {
+                            ...item,
+                            style: { ...item.style, textAlign: e.target.value },
+                          }
+                        : item,
+                    ),
+                  )
+                }
+              >
+                <option value="left">Left</option>
+                <option value="center">Center</option>
+                <option value="right">Right</option>
+              </select>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {previewMode && (
+        <div
+          className="frontDropDiv"
+          style={{ maxWidth: "100%", boxSizing: "border-box" }}
+        >
+          {frontElements.map((el) => (
+            <div key={el.id} style={{ marginBottom: "15px" }}>
+              {el.type === "h1" && (
+                <h1
+                  style={{
+                    color: el.style.color,
+                    textAlign: el.style.textAlign,
+                  }}
+                >
+                  {el.value}
+                </h1>
+              )}
+              {el.type === "h2" && (
+                <h2
+                  style={{
+                    color: el.style.color,
+                    textAlign: el.style.textAlign,
+                  }}
+                >
+                  {el.value}
+                </h2>
+              )}
+              {el.type === "p" && (
+                <p
+                  style={{
+                    color: el.style.color,
+                    textAlign: el.style.textAlign,
+                  }}
+                >
+                  {el.value}
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

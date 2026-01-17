@@ -71,11 +71,11 @@ const Page = () => {
   const handleSet = (value, id, zone) => {
     if (zone === "about") {
       setAboutElements((prev) =>
-        prev.map((el) => (el.id === id ? { ...el, value } : el))
+        prev.map((el) => (el.id === id ? { ...el, value } : el)),
       );
     } else {
       setElements((prev) =>
-        prev.map((el) => (el.id === id ? { ...el, value } : el))
+        prev.map((el) => (el.id === id ? { ...el, value } : el)),
       );
     }
   };
@@ -107,7 +107,7 @@ const Page = () => {
 
   const handleResize = (id, width, height) => {
     setElements((prev) =>
-      prev.map((el) => (el.id === id ? { ...el, width, height } : el))
+      prev.map((el) => (el.id === id ? { ...el, width, height } : el)),
     );
   };
 
@@ -208,8 +208,8 @@ const Page = () => {
                   template === "blog"
                     ? ["h1", "h2", "p", "img"]
                     : template === "landing"
-                    ? ["h1", "p", "button", "img"]
-                    : ["h1", "h2", "p"]
+                      ? ["h1", "p", "button", "img"]
+                      : ["h1", "h2", "p"]
                 }
                 /*drop dobija informaciju koji tip elementa smo prevukli */
                 handleDragStart={handleDragStart}
@@ -289,6 +289,16 @@ const Page = () => {
 
           {template === "landing" && (
             <LandingTemplate previewMode={true} data={landingData} />
+          )}
+
+          {template === "front" && (
+            <FrontPage
+              previewMode={true}
+              title={frontTitle}
+              frontTitleStyle={frontTitleStyle}
+              frontBackground={frontBackground}
+              frontElements={frontElements}
+            />
           )}
         </div>
       )}
