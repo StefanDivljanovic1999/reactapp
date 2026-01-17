@@ -179,6 +179,33 @@ const Page = () => {
     }
   };
 
+  const handleDiscardAll = () => {
+    if (!window.confirm("Discard all changes?")) return;
+    setTemplate(null);
+
+    //za blog template
+    setElements([]);
+    setAboutElements([]);
+    setTitle(null);
+    setImage(null);
+    setPreview(null);
+
+    // landing
+    setLandingData(null);
+
+    // front
+    setFrontTitle(null);
+    setFrontElements([]);
+    setFrontBackground(null);
+    setFrontTitleStyle({
+      color: "#000000",
+      fontSize: 48,
+      textAlign: "center",
+    });
+
+    setPreviewMode(false);
+  };
+
   return (
     <div className="divPage">
       {!previewMode && (
@@ -225,7 +252,7 @@ const Page = () => {
               {/*Svaki put kada se klikne menja se stanje, pa se menja i tekst dugmeta*/}
               {previewMode ? "Back to edit" : "Preview"}
             </button>
-            <button>Discard all</button>
+            <button onClick={handleDiscardAll}>Discard all</button>
           </div>
           {template === "blog" && (
             /*komponenta blog template u ovom slucaju predstavlja drop zonu i opisuje njeno ponasanje u zavisnosti od toga koji 
