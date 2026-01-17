@@ -9,6 +9,7 @@ import { FaSearch } from "react-icons/fa";
 
 const MyPage = () => {
   const auth_token = window.sessionStorage.getItem("auth_token");
+  const role = window.sessionStorage.getItem("role");
   const user_id = window.sessionStorage.getItem("user_id");
   const [allPages, setAllPages] = useState([]);
   const [page, setPage] = useState(null);
@@ -74,6 +75,11 @@ const MyPage = () => {
   };
 
   const handleEdit = async () => {
+    if (Number(user_id) !== page.user_id && role !== "admin") {
+      alert("Only page CREATOR can edit their page!!!");
+      return;
+    }
+
     try {
       const response = await axios.post(
         `http://127.0.0.1:8000/api/pages/${page.id}`,
@@ -113,7 +119,7 @@ const MyPage = () => {
       alert("Page : " + page.title + " successfully deleted!");
       window.location.href = "/my-page";
     } catch (error) {
-      alert("Error deleting page...");
+      alert(error.response.data.message);
       console.log(error);
     }
   };
@@ -157,6 +163,36 @@ const MyPage = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleApprovePage = async (status) => {
+    console.log(status);
+    console.log(page.id);
+    try {
+      const formData = new FormData();
+      formData.append("_method", "PUT");
+      formData.append("status", status);
+      const response = await axios.post(
+        `http://127.0.0.1:8000/api/pages/approve/${page.id}`,
+        formData,
+        { headers: { Authorization: "Bearer " + auth_token } },
+      );
+      console.log(response.data);
+
+      /*da bi nam vizuleno odmah nestao h1 koji kaze da stranica nije dobila submit */
+      setPage((prev) => ({
+        ...prev,
+        status: status,
+      }));
+      alert("Page got status: " + status);
+    } catch (error) {
+      console.log(error.response.data.message);
+    }
+
+    /*da nam u search baru ne bi opet izlazila stranica ciji je status vec submitted */
+    setAllPages((prevPages) =>
+      prevPages.map((p) => (p.id === page.id ? { ...p, status: status } : p)),
+    );
   };
 
   return (
@@ -220,21 +256,56 @@ const MyPage = () => {
       )}
       {page && page.template === "blog" && (
         <div className="PageDiv" style={{ padding: "100px" }}>
-          <button onClick={() => setPage(null)}>Back to My pages</button>
-          {enableEdit === false ? (
-            <button onClick={() => setEnableEdit(true)}>Edit page</button>
-          ) : (
-            <div>
-              <button onClick={() => setEnableEdit(false)}>Stop editing</button>
-              <button onClick={handleEdit}>Update page!</button>
-            </div>
-          )}
+          <div className="pageActions">
+            <button className="BackToMyPages" onClick={() => setPage(null)}>
+              Back to My pages
+            </button>
+            {enableEdit === false ? (
+              <button
+                className="EditMyPage"
+                onClick={() => setEnableEdit(true)}
+              >
+                Edit page
+              </button>
+            ) : (
+              <div>
+                <button
+                  className="StopEditingMyPage"
+                  onClick={() => setEnableEdit(false)}
+                >
+                  Stop editing
+                </button>
+                <button className="UpdateMyPage" onClick={handleEdit}>
+                  Update page!
+                </button>
+              </div>
+            )}
 
-          <button onClick={handleDeletePage}>Delete page</button>
+            <button className="DeleteMyPage" onClick={handleDeletePage}>
+              Delete page
+            </button>
+          </div>
+
           {page.status === "draft" && (
             <h1 className="DraftPageInfo">
               Page status is draft! Waiting od admin approval...
             </h1>
+          )}
+          {page.status === "draft" && role === "admin" && (
+            <div className="approveDiv">
+              <button
+                className="PublishButton"
+                onClick={() => handleApprovePage("published")}
+              >
+                Approve page
+              </button>
+              <button
+                className="rejectButton"
+                onClick={() => handleApprovePage("rejected")}
+              >
+                Reject page
+              </button>
+            </div>
           )}
           <h1>{page.title}</h1>
 
@@ -350,6 +421,23 @@ const MyPage = () => {
               Page status is draft! Waiting od admin approval...
             </h1>
           )}
+          {page.status === "draft" && role === "admin" && (
+            <div className="approveDiv">
+              <button
+                className="PublishButton"
+                onClick={() => handleApprovePage("published")}
+              >
+                Approve page
+              </button>
+              <button
+                className="rejectButton"
+                onClick={() => handleApprovePage("rejected")}
+              >
+                Reject page
+              </button>
+            </div>
+          )}
+
           <h1>{page.title}</h1>
 
           {page.layout.hero?.map((el) => (
