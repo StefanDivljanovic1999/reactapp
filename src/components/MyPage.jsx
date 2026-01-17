@@ -9,6 +9,7 @@ import { FaSearch } from "react-icons/fa";
 
 const MyPage = () => {
   const auth_token = window.sessionStorage.getItem("auth_token");
+  const user_id = window.sessionStorage.getItem("user_id");
   const [allPages, setAllPages] = useState([]);
   const [page, setPage] = useState(null);
   const [search, setSearch] = useState("");
@@ -16,12 +17,15 @@ const MyPage = () => {
   const [editIndex, setEditIndex] = useState(null);
   const [editValue, setEditValue] = useState("");
   const [filterPages, setFilterPages] = useState(false);
+  /*dodajemo opciju za prikaz draftova da bi admin mogao da stranicama dodeli status */
+  const [showDrafts, setShowDrafts] = useState(false);
 
   const fetchPages = useCallback(async () => {
     try {
       const response = await axios.get("http://127.0.0.1:8000/api/pages", {
         headers: { Authorization: "Bearer " + auth_token },
       });
+
       setAllPages(response.data);
       console.log(response.data);
     } catch (error) {
@@ -33,11 +37,26 @@ const MyPage = () => {
     fetchPages();
   }, [fetchPages]);
 
-  const displayedPages =
-    search === ""
-      ? allPages
-      : allPages.filter((p) =>
-          p.slug.toLowerCase().includes(search.toLocaleLowerCase()),
+  /*U kodu ispod je navedeno da se div gde se prikazuju draftovi mogu videti samo admini */
+  /*ako je admin cekirao da vidi samo draftove prikazace se samo slugovi stranica sa stranice
+  u dropdown listi */
+  /*Ako je search prazan prikazuju se svi, ako je nesto uneto izlaze poklapanja */
+  const displayedPages = showDrafts
+    ? search === ""
+      ? allPages.filter((p) => p.status === "draft")
+      : allPages.filter(
+          (p) =>
+            p.status === "draft" &&
+            p.slug.toLowerCase().includes(search.toLowerCase()),
+        )
+    : search === ""
+      ? allPages.filter(
+          (p) => p.status === "published" || p.user_id === Number(user_id),
+        )
+      : allPages.filter(
+          (p) =>
+            (p.status === "published" || p.user_id === Number(user_id)) &&
+            p.slug.toLowerCase().includes(search.toLowerCase()),
         );
 
   const handleSearch = async (slug) => {
@@ -162,8 +181,9 @@ const MyPage = () => {
               <ul className="MyPageUl">
                 {displayedPages.map((p) => (
                   <li
+                    clas
                     key={p.id}
-                    className="MyPageLi"
+                    className={`MyPageLi ${p.status === "draft" ? "draftItem" : ""}`}
                     onClick={() => {
                       setSearch(p.slug);
                       setFilterPages(false);
@@ -174,6 +194,21 @@ const MyPage = () => {
                 ))}
               </ul>
             )}
+
+            <div style={{ marginTop: "8px" }}>
+              {window.sessionStorage.getItem("role") === "admin" && (
+                <label className="showDraftsLabel">
+                  <input
+                    className="showDraftInput"
+                    type="checkbox"
+                    checked={showDrafts}
+                    onChange={(e) => setShowDrafts(e.target.checked)}
+                  />
+                  Show drafts
+                </label>
+              )}
+            </div>
+
             <button
               className="searchButton"
               onClick={() => handleSearch(search)}
@@ -196,6 +231,11 @@ const MyPage = () => {
           )}
 
           <button onClick={handleDeletePage}>Delete page</button>
+          {page.status === "draft" && (
+            <h1 className="DraftPageInfo">
+              Page status is draft! Waiting od admin approval...
+            </h1>
+          )}
           <h1>{page.title}</h1>
 
           {page.layout.map((el, index) => {
@@ -304,6 +344,12 @@ const MyPage = () => {
       {page && page.template === "landing" && (
         <div className="PageDiv" style={{ padding: "100px" }}>
           <button onClick={() => setPage(null)}>Back to My pages</button>
+
+          {page.status === "draft" && (
+            <h1 className="DraftPageInfo">
+              Page status is draft! Waiting od admin approval...
+            </h1>
+          )}
           <h1>{page.title}</h1>
 
           {page.layout.hero?.map((el) => (

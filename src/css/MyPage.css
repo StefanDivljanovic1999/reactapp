@@ -135,3 +135,24 @@
   background-color: rgba(255, 255, 255, 0.01);
   transition: all 0.3s ease;
 }
+
+.DraftPageInfo {
+  background-color: red;
+  color: aliceblue;
+  font-weight: bolder;
+  font-size: larger;
+  padding: 20px;
+  border-radius: 15px;
+}
+
+.showDraftsLabel {
+  color: lime;
+}
+
+.draftItem {
+  background-color: rgba(255, 0, 0, 0.1); /* blago crvena */
+}
+
+.draftItem:hover {
+  background-color: rgba(255, 0, 0, 0.2); /* jača kad hover */
+}
