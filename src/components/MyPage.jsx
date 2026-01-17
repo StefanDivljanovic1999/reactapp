@@ -37,14 +37,14 @@ const MyPage = () => {
     search === ""
       ? allPages
       : allPages.filter((p) =>
-          p.slug.toLowerCase().includes(search.toLocaleLowerCase())
+          p.slug.toLowerCase().includes(search.toLocaleLowerCase()),
         );
 
   const handleSearch = async (slug) => {
     if (!slug) return;
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/pages/preview/${slug}`
+        `http://127.0.0.1:8000/api/pages/preview/${slug}`,
       );
       setPage(response.data);
       console.log(response.data);
@@ -67,7 +67,7 @@ const MyPage = () => {
             Authorization: "Bearer " + auth_token,
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       console.log(response.data);
@@ -80,7 +80,7 @@ const MyPage = () => {
 
   const handleDeletePage = async () => {
     const confrimDelete = window.confirm(
-      "Are you sure you want to delete this page?"
+      "Are you sure you want to delete this page?",
     );
     if (!confrimDelete) return;
     try {
@@ -129,7 +129,7 @@ const MyPage = () => {
           headers: {
             Authorization: "Bearer " + auth_token,
           },
-        }
+        },
       );
 
       const newLayout = [...page.layout];
@@ -338,18 +338,11 @@ const MyPage = () => {
 
       {page && page.template === "front" && (
         <div
-          className="PageDiv"
+          className="PageDivFront"
           style={{
-            minHeight: "100vh",
-            padding: "50px",
             backgroundImage: page.layout.background
               ? `url(${page.layout.background})`
               : "none",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            color: "#fff",
-            overflowY: "auto",
           }}
         >
           <button onClick={() => setPage(null)}>Back to My pages</button>
@@ -366,13 +359,13 @@ const MyPage = () => {
           <button onClick={handleDeletePage}>Delete page</button>
 
           <h1
+            className="frontPageTitle"
             contentEditable={enableEdit}
             suppressContentEditableWarning
             style={{
               color: page.layout.frontTitleStyle.color,
               fontSize: `${page.layout.frontTitleStyle.fontSize}px`,
               textAlign: page.layout.frontTitleStyle.textAlign,
-              marginBottom: "40px",
             }}
             onBlur={(e) =>
               enableEdit &&
@@ -388,16 +381,7 @@ const MyPage = () => {
             {page.layout.title || page.title}
           </h1>
 
-          <div
-            style={{
-              border: "2px dashed #aaa",
-              padding: "20px",
-              borderRadius: "12px",
-              backdropFilter: "blur(6px)",
-              backgroundColor: "rgba(255, 255, 255, 0.01)",
-              transition: "all 0.3s ease",
-            }}
-          >
+          <div className="frontPageElements">
             {page.layout.elements.map((el, index) => {
               const style = {
                 marginBottom: "24px",
