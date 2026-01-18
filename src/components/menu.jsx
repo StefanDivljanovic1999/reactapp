@@ -78,6 +78,15 @@ const Menu = () => {
     /*preuzima se vrednost koju smo prenosili iz dragstarta */
     const slug = e.dataTransfer.getData("text/plain");
 
+    /*nalazimo page na osnovu sluga */
+    const pageForCheck = allPages.find((p) => p.slug === slug);
+
+    /*ako na prvi element pokusavamo da dodelimo element sa drugim templteom javlja se greska */
+    if (index === 0 && pageForCheck.template !== "front") {
+      alert("Only front page can be dropped on element number 1!!!");
+      return;
+    }
+
     /*ako slug ispustimo na mesto koje je vec zauzeto nekim elementom javlja se greska */
     if (menuItems[index]) {
       alert("This menu postion is already taken!");
