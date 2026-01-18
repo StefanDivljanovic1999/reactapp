@@ -1,223 +1,287 @@
-/* Glavni container */
+/* Menu.css */
+
+/* Osnovni container */
 .MenuContainer {
   max-width: 900px;
-  margin: auto;
-  padding: 40px;
-  background-color: #fff;
-  border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0 auto;
+  padding: 50px 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #333;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Naslovi */
-.MenuContainer h1 {
+/* Naslov stranice */
+.createSiteH1Menu {
   text-align: center;
-  color: #273c75;
-  margin-bottom: 20px;
+  font-size: 2em;
+  margin-bottom: 30px;
 }
 
-.MenuContainer h2 {
-  color: #44bd32;
-  margin-top: 20px;
-}
-
-.MenuContainer h3,
-.MenuContainer h4 {
-  color: #2f3640;
-  margin: 8px 0;
-}
-
-/* Site title input i dugme */
-.MenuTitle {
+/* Step 1 - Title input */
+.MenuTitle .inputSelectWrapper {
   display: flex;
-  align-items: center;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .menuItemsInput {
   flex: 1;
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 1px solid #dcdde1;
-  font-size: 16px;
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
 .btnShowTitle {
-  padding: 8px 15px;
+  padding: 10px 15px;
+  background-color: #4caf50;
+  color: white;
   border: none;
-  background-color: #273c75;
-  color: #fff;
-  border-radius: 8px;
+  border-radius: 5px;
   cursor: pointer;
-  font-weight: bold;
-  transition: background 0.3s;
 }
 
 .btnShowTitle:hover {
-  background-color: #192a56;
+  background-color: #45a049;
 }
 
-/* Number of menu items */
-.numOfItemsDiv {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
+.yourTitle {
+  margin-top: 10px;
+  font-weight: bold;
 }
 
-.inputNumOfItems {
-  width: 80px;
-  padding: 6px 10px;
-  border-radius: 8px;
-  border: 1px solid #dcdde1;
-  font-size: 16px;
-}
-
-.btnCheckNum {
-  padding: 6px 12px;
+.nextButtonMenu,
+.previousButtonMenu,
+.btnSaveMenu {
+  padding: 10px 20px;
+  margin-top: 20px;
+  margin-right: 10px;
   border: none;
-  background-color: #40739e;
-  color: #fff;
-  border-radius: 8px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background 0.3s;
 }
 
-.btnCheckNum:hover {
-  background-color: #2f3640;
+.nextButtonMenu {
+  background-color: #007bff;
+  color: white;
 }
 
-/* Menu nav bar */
+.nextButtonMenu:hover {
+  background-color: #0069d9;
+}
+
+.previousButtonMenu {
+  background-color: #6c757d;
+  color: white;
+}
+
+.previousButtonMenu:hover {
+  background-color: #5a6268;
+}
+
+.btnSaveMenu {
+  background-color: #28a745;
+  color: white;
+}
+
+.btnSaveMenu:hover {
+  background-color: #218838;
+}
+
+/* Step 2 - Number of items */
+.numOfItemsDiv input {
+  padding: 8px;
+  width: 230px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-right: 10px;
+  text-align: center;
+}
+
+/* Step 3 - Drag & drop menu */
+.dragAndDropMenu h1,
+.dragAndDropMenu h2 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.menuNavBar {
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
 .menuNavBarUl {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 10px;
+  justify-content: center;
   padding: 0;
+  margin: 0;
 }
 
 .menuNavBarLi {
-  background-color: #dcdde1;
-  width: 150px;
-  height: 80px;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background-color: #e9ecef;
+  padding: 15px 20px;
+  border-radius: 5px;
+  text-align: center;
+  min-width: 120px;
   cursor: pointer;
-  position: relative;
-  transition: transform 0.2s, background-color 0.2s;
 }
 
-.menuNavBarLi:hover {
-  transform: scale(1.05);
-  background-color: #f1f2f6;
+.menuItemWrapper {
+  position: relative;
 }
 
 .menuNavBarLiName {
+  margin: 0;
   user-select: none;
-  font-weight: bold;
 }
 
-.menuNavBarLi + button {
+.deleteBtn {
   position: absolute;
-  top: -10px;
-  right: -10px;
-  background-color: #e84118;
-  color: #fff;
+  top: -8px;
+  right: -8px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.deleteBtn:hover {
+  background-color: darkred;
+}
+
+/* Search dropdown */
+.divSearchMenu {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.SearchInputWrapperMenu {
+  display: inline-block;
+  position: relative;
+}
+
+.SearchInputMyPageMenu {
+  padding: 10px;
+  width: 250px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.searchButtonMenu {
+  padding: 10px 15px;
+  margin-left: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: rgb(71, 3, 71);
+  color: white;
+  cursor: pointer;
+}
+
+.MyPageUl {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 10;
+  padding: 0;
+  margin: 0;
+}
+
+.MyPageLi {
+  list-style: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.MyPageLi:hover {
+  background-color: #f1f1f1;
+}
+
+/* Selected draggable page */
+.selectedPage {
+  position: relative;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.dragSlug {
+  display: flex;
+  width: 150px;
+  height: 180px;
+  border: 2px solid black;
+  background-color: white;
+  padding-top: 25px;
+  text-align: center;
+  justify-self: center;
+  justify-content: center;
+  font-size: larger;
+  cursor: grab;
+}
+
+.dragSlug:hover {
+  scale: calc(1.1);
+  border: 3px solid #007bff;
+}
+
+/* Menu items list */
+.dragAndDropMenu h3 {
+  text-align: center;
+  margin: 5px 0;
+}
+
+.pageCard {
+  position: relative;
+  display: inline-block;
+}
+
+.deletePageBtn {
+  position: absolute;
+  top: 10px;
+  right: 5px;
+  background-color: red;
+  color: white;
   border: none;
   border-radius: 50%;
   width: 22px;
   height: 22px;
   cursor: pointer;
-  font-weight: bold;
-  line-height: 22px;
-  padding: 0;
+  font-size: 12px;
+  font-weight: bolder;
 }
 
-.menuNavBarLi + button:hover {
-  background-color: #c23616;
+.SFP {
+  width: 550px;
+  background-color: rgb(71, 3, 71);
+  color: aliceblue;
+  font-weight: bolder;
+  font-size: xx-large;
+  font-style: italic;
+  justify-self: center;
+  border-style: dotted;
 }
 
-/* Search input i dropdown */
-.divSearchMenu {
-  margin: 30px 0;
-  position: relative;
-}
-
-.SearchInputWrapperMenu {
-  position: relative;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.SearchInputMyPageMenu {
-  padding: 8px 12px;
-  width: 300px;
-  border-radius: 8px;
-  border: 1px solid #dcdde1;
-  font-size: 16px;
-  z-index: 1;
-  position: relative;
-}
-
-/* Dropdown opcije odmah ispod inputa */
-.MyPageUl {
-  position: absolute;
-  top: 100%; /* odmah ispod inputa */
-  left: 0;
-  background: #fff;
-  border: 1px solid #dcdde1;
-  border-radius: 8px;
-  width: 300px;
-  max-height: 200px;
-  overflow-y: auto;
-  z-index: 100;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.MyPageLi {
-  padding: 8px 12px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.MyPageLi:hover {
-  background-color: #f1f2f6;
-}
-
-/* Selected page */
-.selectedPage {
-  margin: 20px 0;
-  padding: 15px;
-  background-color: #f5f6fa;
-  border: 2px dashed #40739e;
-  border-radius: 12px;
-  text-align: center;
-}
-
-.dragSlug {
-  cursor: grab;
-  color: #40739e;
-}
-
-/* Save button */
-.btnSaveMenu {
-  margin-top: 20px;
-  padding: 10px 25px;
-  border: none;
-  background-color: #273c75;
-  color: #fff;
+.previewBtnMenu {
+  padding: 8px 16px;
+  background-color: rgb(71, 3, 71);
+  color: aliceblue;
+  font-weight: 600;
   border-radius: 10px;
   cursor: pointer;
-  font-weight: bold;
-  transition: background 0.3s;
-}
-
-.btnSaveMenu:hover {
-  background-color: #192a56;
 }

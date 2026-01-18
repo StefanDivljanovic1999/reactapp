@@ -7,7 +7,9 @@ import { useCallback } from "react";
 import "../css/MyPage.css";
 import { FaSearch } from "react-icons/fa";
 
-const MyPage = () => {
+import { useLocation } from "react-router-dom";
+
+const MyPage = ({ pageSlug }) => {
   const auth_token = window.sessionStorage.getItem("auth_token");
   const role = window.sessionStorage.getItem("role");
   const user_id = window.sessionStorage.getItem("user_id");
@@ -20,6 +22,20 @@ const MyPage = () => {
   const [filterPages, setFilterPages] = useState(false);
   /*dodajemo opciju za prikaz draftova da bi admin mogao da stranicama dodeli status */
   const [showDrafts, setShowDrafts] = useState(false);
+
+  const location = useLocation();
+  //hook koji vraca obj sa info o trenutnim URL(path, query parametri...)
+  const query = new URLSearchParams(location.search);
+  const pageSlugFromQuery = query.get("previewSlug");
+
+  useEffect(() => {
+    const slugToSearch = pageSlug || pageSlugFromQuery;
+    if (slugToSearch) {
+      setSearch(slugToSearch);
+      setFilterPages(false);
+      handleSearch(slugToSearch);
+    }
+  }, [pageSlug, pageSlugFromQuery]);
 
   const fetchPages = useCallback(async () => {
     try {
