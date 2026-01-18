@@ -35,7 +35,7 @@ const SiteBrowser = () => {
     search === ""
       ? allSites
       : allSites.filter((s) =>
-          s.slug.toLowerCase().includes(search.toLocaleLowerCase())
+          s.slug.toLowerCase().includes(search.toLocaleLowerCase()),
         );
 
   const handleSearch = async (slug) => {
@@ -45,7 +45,7 @@ const SiteBrowser = () => {
         `http://127.0.0.1:8000/api/menus/preview/${slug}`,
         {
           headers: { Authorization: "Bearer " + auth_token },
-        }
+        },
       );
       setSite(response.data);
       console.log(response.data);
@@ -60,13 +60,35 @@ const SiteBrowser = () => {
     if (!url) return;
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/pages/preview/${url}`
+        `http://127.0.0.1:8000/api/pages/preview/${url}`,
       );
       console.log(response.data);
       setPage(response.data);
     } catch (error) {
       console.error("Error fetching page:", error);
       alert("Page not found or server error.");
+    }
+  };
+
+  const handleDeleteSite = async () => {
+    console.log(site.id);
+    const confrimDelete = window.confirm(
+      "Are you sure you want to delete this site?",
+    );
+    if (!confrimDelete) return;
+    try {
+      await axios.delete(`http://127.0.0.1:8000/api/menus/${site.id}`, {
+        headers: {
+          Authorization: "Bearer " + auth_token,
+          "Content-Type": "application/json",
+        },
+      });
+
+      alert("Site : " + site.title + " successfully deleted!");
+      window.location.href = "/browser";
+    } catch (error) {
+      alert(error.response.data.message);
+      console.log(error);
     }
   };
 
@@ -121,8 +143,8 @@ const SiteBrowser = () => {
 
       {site && (
         <div>
-          <button>Edit page</button>
-          <button>Delete page</button>
+          <button>Edit site</button>
+          <button onClick={handleDeleteSite}>Delete site</button>
           <nav className="browserNavbar">
             <button className="backButton1" onClick={() => setSite(null)}>
               <IoMdArrowRoundBack />

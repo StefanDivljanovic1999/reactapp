@@ -73,7 +73,6 @@ const SitePage = ({ page }) => {
         >
           <h1
             className="frontPageTitle"
-            suppressContentEditableWarning
             style={{
               color: page.layout.frontTitleStyle.color,
               fontSize: `${page.layout.frontTitleStyle.fontSize}px`,
