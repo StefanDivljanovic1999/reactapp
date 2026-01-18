@@ -6,6 +6,7 @@ import { useCallback } from "react";
 import "../css/Browser.css";
 import SitePage from "./SitePage";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import Menu from "./menu";
 
 const SiteBrowser = () => {
   const auth_token = window.sessionStorage.getItem("auth_token");
@@ -14,6 +15,8 @@ const SiteBrowser = () => {
   const [search, setSearch] = useState("");
   const [filterSites, setFilterSites] = useState(false);
   const [page, setPage] = useState(null);
+
+  const [editSite, setEditSite] = useState(null);
 
   const fetchSites = useCallback(async () => {
     try {
@@ -141,9 +144,9 @@ const SiteBrowser = () => {
         </div>
       )}
 
-      {site && (
+      {site && !editSite && (
         <div>
-          <button>Edit site</button>
+          <button onClick={() => setEditSite(site)}>Edit site</button>
           <button onClick={handleDeleteSite}>Delete site</button>
           <nav className="browserNavbar">
             <button className="backButton1" onClick={() => setSite(null)}>
@@ -160,6 +163,8 @@ const SiteBrowser = () => {
           {page && <SitePage page={page} />}
         </div>
       )}
+
+      {editSite && <Menu editSite={editSite} />}
     </div>
   );
 };

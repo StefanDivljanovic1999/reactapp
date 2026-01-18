@@ -5,7 +5,9 @@ import { useState } from "react";
 import { useEffect } from "react";
 import "../css/Menu.css";
 
-const Menu = () => {
+const Menu = ({ editSite }) => {
+  const editMode = !!editSite;
+
   const auth_token = window.sessionStorage.getItem("auth_token");
   //dodajemo steps zato sto zelim da kreiranje sajta bude step by step
   const [step, setStep] = useState(1);
@@ -131,6 +133,16 @@ const Menu = () => {
     setShowNavBar(true);
   };
 
+  useEffect(() => {
+    if (editMode) {
+      setTitle(editSite.title);
+      setNumOfItems(editSite.items.length);
+      setMenuItems(editSite.items.map((i) => i.url));
+      setStep(3);
+      setShowNavBar(true);
+    }
+  }, [editSite, editMode]);
+
   const handleSaveMenu = async () => {
     const filteredItems = menuItems.filter(Boolean).map((slug) => ({
       title: slug.replace("-", " "),
@@ -146,11 +158,21 @@ const Menu = () => {
     };
 
     try {
-      await axios.post("http://127.0.0.1:8000/api/menus", payload, {
-        headers: { Authorization: "Bearer " + auth_token },
-      });
+      if (editMode) {
+        const updatePayload = { _method: "PUT", ...payload };
+        await axios.post(
+          `http://127.0.0.1:8000/api/menus/${editSite.id}`,
+          updatePayload,
+          { headers: { Authorization: "Bearer " + auth_token } },
+        );
+        alert("Site updated!");
+      } else {
+        await axios.post("http://127.0.0.1:8000/api/menus", payload, {
+          headers: { Authorization: "Bearer " + auth_token },
+        });
 
-      alert("Menu successfully created!");
+        alert("Menu successfully created!");
+      }
     } catch (error) {
       console.log(error);
       alert("Error careating menu...");
@@ -160,10 +182,13 @@ const Menu = () => {
   /*na pocetku je svako mesto prazno, pa se svakom elementu dodeljuje null vrednost */
   /*ako se posle predomislimo pravi se novi niz koji ima elemente iz prethonohih+ novi koji dobijaju null, ili se brisu */
   useEffect(() => {
-    setMenuItems((prev) =>
-      Array.from({ length: numOfItems }, (_, i) => prev[i] ?? null),
-    );
-  }, [numOfItems]);
+    setMenuItems((prev) => {
+      // ako smo u edit modu i već imamo iteme – ne diraj ih
+      if (editMode && prev.length > 0) return prev;
+
+      return Array.from({ length: numOfItems }, (_, i) => prev[i] ?? null);
+    });
+  }, [numOfItems, editMode]);
 
   const handleDeleteItem = (i) => {
     /*prosledjuje se index iz niza */
@@ -186,6 +211,7 @@ const Menu = () => {
             <input
               className="menuItemsInput"
               type="text"
+              value={title || ""}
               placeholder="Enter site title here: "
               onChange={(e) => setTitle(e.target.value)}
               required
@@ -209,8 +235,9 @@ const Menu = () => {
           <input
             className="inputNumOfItems"
             type="number"
+            value={numOfItems}
             placeholder="enter number between 1 and 10"
-            onInput={(e) => setNumOfItems(e.target.value)}
+            onChange={(e) => setNumOfItems(e.target.value)}
           />
 
           <div>
@@ -362,7 +389,7 @@ const Menu = () => {
             </button>
             {/*klikom na create site cuvamo nas sajt u bazi */}
             <button className="btnSaveMenu" onClick={handleSaveMenu}>
-              Create site
+              {!editMode ? "Create site" : "Update site"}
             </button>
           </div>
         </div>
