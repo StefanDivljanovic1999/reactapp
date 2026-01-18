@@ -105,6 +105,19 @@ const Menu = () => {
     setPage(null);
   };
 
+  const checkTitle = () => {
+    if (!title || title === "") {
+      alert("Title is required!!!");
+      return;
+    }
+
+    if (title.length < 3) {
+      alert("Incorrect title length(min 3)!!!");
+      return;
+    }
+    setStep(2);
+  };
+
   const checkNumOfItems = (num) => {
     /*da ne bi doslo do baga ako se num protumaci kao varchar */
     num = Number(num);
@@ -184,7 +197,7 @@ const Menu = () => {
 
           {showTitle && <h4 className="yourTitle">Your title: {title}</h4>}
 
-          <button className="nextButtonMenu" onClick={() => setStep(2)}>
+          <button className="nextButtonMenu" onClick={() => checkTitle()}>
             Next
           </button>
         </div>

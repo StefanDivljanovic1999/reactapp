@@ -61,6 +61,56 @@ const SitePage = ({ page }) => {
           </section>
         </>
       )}
+
+      {page && page.template === "front" && (
+        <div
+          className="PageDivFront"
+          style={{
+            backgroundImage: page.layout.background
+              ? `url(${page.layout.background})`
+              : "none",
+          }}
+        >
+          <h1
+            className="frontPageTitle"
+            suppressContentEditableWarning
+            style={{
+              color: page.layout.frontTitleStyle.color,
+              fontSize: `${page.layout.frontTitleStyle.fontSize}px`,
+              textAlign: page.layout.frontTitleStyle.textAlign,
+            }}
+          >
+            {page.layout.title || page.title}
+          </h1>
+
+          <div className="frontPageElements">
+            {page.layout.elements.map((el, index) => {
+              const style = {
+                marginBottom: "24px",
+                color: el.style.color,
+                textAlign: el.style.textAlign,
+              };
+
+              return (
+                <div
+                  key={el.id}
+                  style={{
+                    position: "relative",
+                    padding: "8px",
+                    border: "none",
+                  }}
+                >
+                  <>
+                    {el.type === "h1" && <h1 style={style}>{el.value}</h1>}
+                    {el.type === "h2" && <h2 style={style}>{el.value}</h2>}
+                    {el.type === "p" && <p style={style}>{el.value}</p>}
+                  </>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
