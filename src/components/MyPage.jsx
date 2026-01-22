@@ -6,12 +6,10 @@ import { useEffect } from "react";
 import { useCallback } from "react";
 import "../css/MyPage.css";
 import { FaSearch } from "react-icons/fa";
-import Page from "./Page";
+
 import { useLocation } from "react-router-dom";
 
 const MyPage = ({ pageSlug }) => {
-  const [editMode, setEditMode] = useState(false);
-
   const auth_token = window.sessionStorage.getItem("auth_token");
   const role = window.sessionStorage.getItem("role");
   const user_id = window.sessionStorage.getItem("user_id");
@@ -213,10 +211,6 @@ const MyPage = ({ pageSlug }) => {
     );
   };
 
-  if (editMode && page) {
-    return <Page mode="edit" initialPage={page} />;
-  }
-
   return (
     <div className="divMyPage">
       {!page && (
@@ -282,7 +276,10 @@ const MyPage = ({ pageSlug }) => {
               Back to My pages
             </button>
             {enableEdit === false ? (
-              <button className="EditMyPage" onClick={() => setEditMode(true)}>
+              <button
+                className="EditMyPage"
+                onClick={() => setEnableEdit(true)}
+              >
                 Edit page
               </button>
             ) : (

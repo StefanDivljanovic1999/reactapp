@@ -174,22 +174,20 @@ const Page = ({ mode = "create", initialPage = null }) => {
       return;
     }
 
+    /**svaka stranica ima svoj title, layout i template */
     if (template === "blog") {
       payload = {
         title,
         template,
-        layout: elements.map((el) =>
+        layout: [...aboutElements, ...elements].map((el) =>
           el.type === "img"
             ? {
                 type: "img",
-                src: el.image,
+                src: el.image || el.src,
                 width: el.width,
                 height: el.height,
               }
-            : {
-                type: el.type,
-                value: el.value || "",
-              },
+            : { type: el.type, value: el.value || "" },
         ),
       };
     }
