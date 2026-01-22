@@ -22,14 +22,14 @@ const PostCategories = () => {
       : categories.filter((category) =>
           category.title
             .toLocaleLowerCase()
-            .includes(search.toLocaleLowerCase())
+            .includes(search.toLocaleLowerCase()),
         );
 
   const fetchCategories = useCallback(async () => {
     try {
       const response = await axios.get(
         "http://127.0.0.1:8000/api/post_categories",
-        { headers: { Authorization: "Bearer " + auth_token } }
+        { headers: { Authorization: "Bearer " + auth_token } },
       );
       setCategories(response.data);
     } catch (error) {
@@ -77,7 +77,7 @@ const PostCategories = () => {
           headers: {
             Authorization: "Bearer " + auth_token,
           },
-        }
+        },
       );
 
       setTitle("");
@@ -86,6 +86,7 @@ const PostCategories = () => {
       fetchCategories();
       alert("Post category successfully added!");
     } catch (error) {
+      alert(error.response.data.message);
       console.log(error);
     }
   };
@@ -100,13 +101,13 @@ const PostCategories = () => {
           headers: {
             Authorization: "Bearer " + auth_token,
           },
-        }
+        },
       );
       alert("Post category successfully deleted!");
 
       fetchCategories();
     } catch (error) {
-      alert("Failed to delete post category...");
+      alert(error.response.data.message);
       console.log(error);
       return;
     }
@@ -122,7 +123,7 @@ const PostCategories = () => {
           title: editTitle,
           context: editContext,
         },
-        { headers: { Authorization: "Bearer " + auth_token } }
+        { headers: { Authorization: "Bearer " + auth_token } },
       );
       setEditIndex(null);
       setEditTitle("");
@@ -131,7 +132,7 @@ const PostCategories = () => {
       alert("Post category successfully updated!");
       fetchCategories();
     } catch (error) {
-      alert("Failed to edit post category...");
+      alert(error.response.data.message);
       console.log(error);
     }
   };

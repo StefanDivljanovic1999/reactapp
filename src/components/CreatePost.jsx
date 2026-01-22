@@ -29,7 +29,7 @@ const CreatePost = () => {
     try {
       const response = await axios.get(
         "http://127.0.0.1:8000/api/post_categories",
-        { headers: { Authorization: "Bearer " + auth_token } }
+        { headers: { Authorization: "Bearer " + auth_token } },
       );
       setCategories(response.data);
     } catch (error) {
@@ -44,7 +44,7 @@ const CreatePost = () => {
   /*vraca one kategorije koje se poklapaju sa unosom korinika */
   const filterCategories = categories.filter((category) =>
     /*poredi unos i title kategorija tako sto zanemaruje velika slova */
-    category.title.toLowerCase().includes(search.toLowerCase())
+    category.title.toLowerCase().includes(search.toLowerCase()),
   );
 
   const handleImage = (e) => {
@@ -81,7 +81,7 @@ const CreatePost = () => {
         formData,
         {
           headers: { Authorization: "Bearer " + auth_token },
-        }
+        },
       );
 
       alert("Post created successfully!");
@@ -90,7 +90,7 @@ const CreatePost = () => {
       console.log(response.data);
     } catch (error) {
       console.log(error);
-      alert("Post wasn't created! Check console for error...");
+      alert(error.response.data.message);
     }
   };
 

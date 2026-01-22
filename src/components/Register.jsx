@@ -50,8 +50,7 @@ const Register = ({ setname }) => {
         navigate("/");
       })
       .catch((error) => {
-        console.log(error);
-        alert("Registration failed!");
+        alert(error.response.data.message);
       });
     console.log(userData.name, " ", userData.email, " ", userData.password);
   }

@@ -6,8 +6,15 @@ import BlogTemplate from "./BlogTemplate";
 import LandingTemplate from "./LandingTemplate";
 import Elements from "./Elements";
 import FrontPage from "./FrontPage";
+import { useEffect } from "react";
 
-const Page = () => {
+const Page = ({ mode = "create", initialPage = null }) => {
+  /*ova komponenta je namenjena kreiranju stranica koje je dozvoljeno adminu i autoru.Korisnik sa datim ulogama ima
+  mogucnost da stranicu kreira na 3 nacina(3 templatea), a to su blog, landing i front. Prvo je implementirano kreiranje blog stranice
+  pa je komponenta dalje sirena za landing i front */
+
+  /*dodati propsi da bi korisnik mogao i da edituje stranicu iz edit mda */
+
   const [elements, setElements] = useState([]);
   const [aboutElements, setAboutElements] = useState([]);
   const [template, setTemplate] = useState(null);
@@ -29,39 +36,73 @@ const Page = () => {
   });
   const [frontBackground, setFrontBackground] = useState(null);
 
+  useEffect(() => {
+    if (mode !== "edit" || !initialPage) return;
+
+    setTemplate(initialPage.template);
+    setTitle(initialPage.title);
+
+    if (initialPage.template === "blog") {
+      setElements(
+        initialPage.layout.map((el) => ({
+          id: Date.now() + Math.random(),
+          ...el,
+          image: el.src || null,
+        })),
+      );
+    }
+
+    if (initialPage.template === "landing") {
+      setLandingData(initialPage.layout);
+    }
+
+    if (initialPage.template === "front") {
+      setFrontTitle(initialPage.layout.title);
+      setFrontTitleStyle(initialPage.layout.frontTitleStyle);
+      setFrontBackground(initialPage.layout.background);
+      setFrontElements(initialPage.layout.elements);
+    }
+  }, [mode, initialPage]);
+
   const handleDragStart = (e, type) => {
     e.dataTransfer.setData("text/plain", type);
   };
 
   const handleDragOver = (e) => {
+    /*funkcija bez koje drag&drop ne bi mogao da radi */
     e.preventDefault();
   };
 
   const handleDrop = (e, zone) => {
     e.preventDefault();
-
+    /*kada se element ispusti u drop zonu, prima informacija o kom se elementu radi */
     const type = e.dataTransfer.getData("text/plain");
 
     if (zone === "about" && type !== "p") {
+      /*about zona blog templatea prima samo tekst */
       alert("About section accepts only text!");
       return;
     }
 
     const newElement = {
+      /*odmah se kreira novi element sa id i sacuvanim typeom,a vrednost se kasnije edituje */
       id: Date.now(),
       type: type,
     };
 
     if (type === "img") {
+      /*za sliku se cuvaju i duzina i sirina i to se salje u bazu */
       newElement.preview = preview;
       newElement.image = image;
       newElement.width = 300;
       newElement.height = 200;
     } else {
+      /*pocetna vrednost koju korisnik kasnije menja */
       newElement.value = "editTexts";
     }
 
     if (zone === "about") {
+      /*elementi se dodaju u niz */
       setAboutElements([...aboutElements, newElement]);
     } else {
       setElements([...elements, newElement]);
@@ -69,6 +110,7 @@ const Page = () => {
   };
 
   const handleSet = (value, id, zone) => {
+    /*funkcija kojom se menja vrednost tesktualnih dropovanih elemenata  */
     if (zone === "about") {
       setAboutElements((prev) =>
         prev.map((el) => (el.id === id ? { ...el, value } : el)),
@@ -81,7 +123,7 @@ const Page = () => {
   };
 
   const handleImage = async (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
     if (!file) return;
 
     const previewURL = URL.createObjectURL(file);
@@ -90,14 +132,26 @@ const Page = () => {
     const fd = new FormData();
     fd.append("image", file);
 
-    const res = await axios.post("http://127.0.0.1:8000/api/upload-image", fd, {
-      headers: { Authorization: "Bearer " + auth_token },
-    });
+    try {
+      const res = await axios.post(
+        "http://127.0.0.1:8000/api/upload-image",
+        fd,
+        {
+          headers: {
+            Authorization: "Bearer " + auth_token,
+          },
+        },
+      );
 
-    setImage(res.data.url);
+      setImage(res.data.url);
+    } catch (error) {
+      console.error("Image upload error:", error.response?.data || error);
+      alert("Image upload failed");
+    }
   };
 
   const handleDelete = (id, zone) => {
+    /*funkcija kojom se sve napravljene promene discarduju */
     if (zone === "about") {
       setAboutElements((prev) => prev.filter((el) => el.id !== id));
     } else {
@@ -106,33 +160,37 @@ const Page = () => {
   };
 
   const handleResize = (id, width, height) => {
+    /*funkcija koja trazi sliku po idu i ako smo toj slici dodelili novu vrednost, nju cuva */
     setElements((prev) =>
       prev.map((el) => (el.id === id ? { ...el, width, height } : el)),
     );
   };
 
-  const handleCreatePage = async () => {
+  const handleSubmitPage = async () => {
     let payload;
+
+    if (!template) {
+      alert("Template is missing!");
+      return;
+    }
 
     if (template === "blog") {
       payload = {
         title,
         template,
-        layout: elements.map((el) => {
-          if (el.type === "img") {
-            return {
-              type: "img",
-              src: el.image,
-              width: el.width,
-              height: el.height,
-            };
-          } else {
-            return {
-              type: el.type,
-              value: el.value || "",
-            };
-          }
-        }),
+        layout: elements.map((el) =>
+          el.type === "img"
+            ? {
+                type: "img",
+                src: el.image,
+                width: el.width,
+                height: el.height,
+              }
+            : {
+                type: el.type,
+                value: el.value || "",
+              },
+        ),
       };
     }
 
@@ -150,14 +208,12 @@ const Page = () => {
     }
 
     if (template === "front") {
-      if (!frontTitle)
-        alert("Front page title is empty! Using default title...");
       payload = {
         title: frontTitle,
-        template: template,
+        template,
         layout: {
           title: frontTitle,
-          frontTitleStyle: frontTitleStyle,
+          frontTitleStyle,
           background: frontBackground,
           elements: frontElements,
         },
@@ -165,17 +221,27 @@ const Page = () => {
     }
 
     try {
-      await axios.post("http://127.0.0.1:8000/api/pages", payload, {
+      const url =
+        mode === "edit"
+          ? `http://127.0.0.1:8000/api/pages/${initialPage.id}`
+          : "http://127.0.0.1:8000/api/pages";
+
+      const method = mode === "edit" ? "put" : "post";
+
+      await axios({
+        method,
+        url,
+        data: payload,
         headers: {
           Authorization: "Bearer " + auth_token,
           "Content-Type": "application/json",
         },
       });
 
-      alert("Page successfully saved!");
+      alert(mode === "edit" ? "Page updated successfully!" : "Page created!");
     } catch (error) {
-      alert("Failed to create page...");
       console.log(error);
+      alert(error.response?.data?.message || "Server error");
     }
   };
 
@@ -242,12 +308,17 @@ const Page = () => {
                 handleDragStart={handleDragStart}
                 /*pregled kako izgleda nasa slika na browseru */
                 preview={preview}
+                /*funkcija kojom se slike prikazuju i cuvaju u bazi */
                 handleImage={handleImage}
               />
             )}
           </div>
           <div className="EditButtons">
-            <button onClick={handleCreatePage}>Create page!</button>
+            {/*sredisnji div koji se koristi za kreiranje, pregled ili brisajne svih izmena napravljenih na stranici */}
+            <button onClick={handleSubmitPage}>
+              {mode === "edit" ? "Update page!" : "Create page!"}
+            </button>
+
             <button onClick={() => setPreviewMode((prev) => !prev)}>
               {/*Svaki put kada se klikne menja se stanje, pa se menja i tekst dugmeta*/}
               {previewMode ? "Back to edit" : "Preview"}
